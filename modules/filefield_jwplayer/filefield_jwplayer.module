@@ -83,14 +83,6 @@ function filefield_jwplayer_player_config($element) {
     'stretching' => 'fill',
   );
 
-  // Poster image. If there is a filefield choosen to be used as the poster
-  // image the field name will be stored in the $element['#item'] array and we
-  // can use it to grab the actual image here.
-  if (isset($element['#item']['poster_image'])) {
-    $image = file_create_url($element['#node']->{$element['#item']['poster_image']}[0]['filepath']);
-    $config['image'] = $image;
-  }
-
   // Allow other modules to alter the $config array.
   drupal_alter('filefield_jwplayer_config', $config, $element);
 
