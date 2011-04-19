@@ -29,7 +29,7 @@
 name = Videola
 description = Videola base profile
 core = 6.x
-theme = bluemarine
+theme = omega
 
 ; -----------------------------------------------------------------------------
 ; You could specify this as a base Profiler include by using the following in
@@ -161,6 +161,7 @@ dependencies[] = webform
 
 ; Videola
 dependencies[] = videola_core
+dependencies[] = videola_browser
 
 ; Custom
 dependencies[] = chaptermarkers
