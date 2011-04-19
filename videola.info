@@ -79,7 +79,6 @@ dependencies[] = views_bulk_operations
 dependencies[] = views_calc
 dependencies[] = views_cycle
 ;dependencies[] = views_export
-dependencies[] = views_groupby
 dependencies[] = jcarousel
 
 ; Images
@@ -123,7 +122,6 @@ dependencies[] = bueditor
 dependencies[] = adminrole
 dependencies[] = advanced_help
 dependencies[] = amazon_s3
-dependencies[] = auto_nodetitle
 dependencies[] = boxes
 dependencies[] = comment_notify
 dependencies[] = commentmail
@@ -135,13 +133,10 @@ dependencies[] = features
 dependencies[] = flag
 dependencies[] = flag_weights
 dependencies[] = globalredirect
-;dependencies[] = google_analytics
 dependencies[] = libraries
 dependencies[] = login_destination
 dependencies[] = logintoboggan
 dependencies[] = mass_contact
-dependencies[] = nodewords
-dependencies[] = options_element
 dependencies[] = password_change
 dependencies[] = pathauto
 dependencies[] = ed_readmore
@@ -149,15 +144,11 @@ dependencies[] = radioactivity
 dependencies[] = role_watchdog
 dependencies[] = securepages
 dependencies[] = session_limit
-dependencies[] = sevenup
 dependencies[] = statistics_advanced
 dependencies[] = stringoverrides
 dependencies[] = strongarm
-dependencies[] = supercron
 dependencies[] = term_node_count
 dependencies[] = token
-dependencies[] = votingapi
-dependencies[] = webform
 
 ; Videola
 dependencies[] = videola_core
@@ -193,8 +184,8 @@ users[superduper][status] = 1
 ; variables need to be set if you want to bypass the Configuration form during 
 ; installation (@see Users for more information on how this is accomplished).
 ; -----------------------------------------------------------------------------
-variables[site_name] = profile_test
-variables[site_mail] = testing@testing
+variables[site_name] = Videola
+variables[site_mail] = testing@testing.com
 
 ;variables[site_footer] = Profiler Example
 ;variables[site_frontpage] = node/1
@@ -212,3 +203,18 @@ nodes[front][type] = page
 nodes[front][title] = Isn't Profiler nifty?
 nodes[front][uid] = 1
 nodes[front][body] = <p>Donec vel ipsum elit. In rutrum, ante at fringilla pharetra, mi justo fermentum risus; eget commodo est mi lobortis augue. Proin fringilla malesuada semper. Ut velit sapien, condimentum vel faucibus ut, aliquam quis dui? Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus vulputate fringilla enim, non convallis nibh lacinia at. Etiam fermentum, lectus ac sagittis volutpat, est augue tincidunt mi, et consectetur orci nisi sit amet sapien. Ut nisi nunc, molestie quis sollicitudin at, dignissim eget nisl? Sed vitae sem lectus. Curabitur viverra laoreet magna. Sed eget sapien tellus, eu tempor purus. Proin dignissim, lacus vitae venenatis porttitor, justo libero rhoncus felis, nec dictum nisl mi vitae nisi. Maecenas tincidunt eros at turpis sollicitudin nec viverra enim condimentum. Sed nec enim justo. In tristique risus dui; ac egestas mi. Proin at arcu sed enim eleifend ornare eu at arcu. Curabitur ullamcorper, ipsum eu imperdiet pharetra, mauris lorem hendrerit metus, in consectetur mauris est iaculis eros. Quisque euismod hendrerit metus ullamcorper tempus! Cras gravida ornare arcu vitae commodo. In hac habitasse platea turpis duis.</p>
+
+nodes[2][type] = video
+nodes[2][title] = First Video
+nodes[2][uid] = 1
+nodes[2][body] = <p>Donec vel ipsum elit. In rutrum, ante at fringilla pharetra, mi justo fermentum risus; eget commodo est mi lobortis augue. Proin fringilla malesuada semper. Ut velit sapien, condimentum vel faucibus ut, aliquam quis dui? Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus vulputate fringilla enim, non convallis nibh lacinia at. Etiam fermentum, lectus ac sagittis volutpat, est augue tincidunt mi, et consectetur orci nisi sit amet sapien. Ut nisi nunc, molestie quis sollicitudin at, dignissim eget nisl? Sed vitae sem lectus. Curabitur viverra laoreet magna. Sed eget sapien tellus, eu tempor purus. Proin dignissim, lacus vitae venenatis porttitor, justo libero rhoncus felis, nec dictum nisl mi vitae nisi. Maecenas tincidunt eros at turpis sollicitudin nec viverra enim condimentum. Sed nec enim justo. In tristique risus dui; ac egestas mi. Proin at arcu sed enim eleifend ornare eu at arcu. Curabitur ullamcorper, ipsum eu imperdiet pharetra, mauris lorem hendrerit metus, in consectetur mauris est iaculis eros. Quisque euismod hendrerit metus ullamcorper tempus! Cras gravida ornare arcu vitae commodo. In hac habitasse platea turpis duis.</p>
+
+nodes[3][type] = video
+nodes[3][title] = Second Video
+nodes[3][uid] = 1
+nodes[3][body] = <p>Donec vel ipsum elit. In rutrum, ante at fringilla pharetra, mi justo fermentum risus; eget commodo est mi lobortis augue. Proin fringilla malesuada semper. Ut velit sapien, condimentum vel faucibus ut, aliquam quis dui? Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus vulputate fringilla enim, non convallis nibh lacinia at. Etiam fermentum, lectus ac sagittis volutpat, est augue tincidunt mi, et consectetur orci nisi sit amet sapien. Ut nisi nunc, molestie quis sollicitudin at, dignissim eget nisl? Sed vitae sem lectus. Curabitur viverra laoreet magna. Sed eget sapien tellus, eu tempor purus. Proin dignissim, lacus vitae venenatis porttitor, justo libero rhoncus felis, nec dictum nisl mi vitae nisi. Maecenas tincidunt eros at turpis sollicitudin nec viverra enim condimentum. Sed nec enim justo. In tristique risus dui; ac egestas mi. Proin at arcu sed enim eleifend ornare eu at arcu. Curabitur ullamcorper, ipsum eu imperdiet pharetra, mauris lorem hendrerit metus, in consectetur mauris est iaculis eros. Quisque euismod hendrerit metus ullamcorper tempus! Cras gravida ornare arcu vitae commodo. In hac habitasse platea turpis duis.</p>
+
+nodes[4][type] = video
+nodes[4][title] = Third Video
+nodes[4][uid] = 1
+nodes[4][body] = <p>Donec vel ipsum elit. In rutrum, ante at fringilla pharetra, mi justo fermentum risus; eget commodo est mi lobortis augue. Proin fringilla malesuada semper. Ut velit sapien, condimentum vel faucibus ut, aliquam quis dui? Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus vulputate fringilla enim, non convallis nibh lacinia at. Etiam fermentum, lectus ac sagittis volutpat, est augue tincidunt mi, et consectetur orci nisi sit amet sapien. Ut nisi nunc, molestie quis sollicitudin at, dignissim eget nisl? Sed vitae sem lectus. Curabitur viverra laoreet magna. Sed eget sapien tellus, eu tempor purus. Proin dignissim, lacus vitae venenatis porttitor, justo libero rhoncus felis, nec dictum nisl mi vitae nisi. Maecenas tincidunt eros at turpis sollicitudin nec viverra enim condimentum. Sed nec enim justo. In tristique risus dui; ac egestas mi. Proin at arcu sed enim eleifend ornare eu at arcu. Curabitur ullamcorper, ipsum eu imperdiet pharetra, mauris lorem hendrerit metus, in consectetur mauris est iaculis eros. Quisque euismod hendrerit metus ullamcorper tempus! Cras gravida ornare arcu vitae commodo. In hac habitasse platea turpis duis.</p>
