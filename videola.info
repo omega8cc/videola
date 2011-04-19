@@ -131,6 +131,7 @@ dependencies[] = context
 dependencies[] = date
 dependencies[] = devel
 dependencies[] = diff
+dependencies[] = features
 dependencies[] = flag
 dependencies[] = flag_weights
 dependencies[] = globalredirect
