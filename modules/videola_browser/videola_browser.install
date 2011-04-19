@@ -1,0 +1,25 @@
+<?php
+
+
+
+function videola_browser_install() {
+  $ret = array();
+
+  // Add terms to Categories
+  $vid = db_result(db_query("SELECT vid FROM {vocabulary} WHERE name = '%s'", 'Categories'));
+  $categories[] = 'Term 1';
+  $categories[] = 'Term 2';
+  $categories[] = 'Term 3';   
+  foreach ($categories as $k=>$v) {
+    $term = array();
+    $term['vid'] = $vid;
+    $term['name'] = $v;
+    $term['description'] = "";
+    $term['weight'] = 0;
+    taxonomy_save_term($term);
+  }
+  drupal_set_message("Terms for Categories have been created.");
+
+  return $ret;
+}
+
