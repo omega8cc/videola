@@ -114,7 +114,7 @@ function videola_video_content_default_fields() {
         'format' => 'above',
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 1,
       ),
       'full' => array(
@@ -211,11 +211,11 @@ function videola_video_content_default_fields() {
         'format' => 'above',
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 1,
       ),
       'full' => array(
-        'format' => 'default',
+        'format' => 'jwplayer',
         'exclude' => 1,
       ),
       '4' => array(
