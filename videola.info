@@ -29,7 +29,7 @@
 name = Videola
 description = Videola base profile
 core = 6.x
-theme = omega
+theme = videola_omega
 
 ; -----------------------------------------------------------------------------
 ; You could specify this as a base Profiler include by using the following in
