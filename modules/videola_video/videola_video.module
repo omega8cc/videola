@@ -1,0 +1,54 @@
+<?php
+
+include_once('videola_video.features.inc');
+
+/**
+ * Implements hook_nodeapi().
+ */
+function videola_video_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  // This is where we handle permissions related to who can and can not see a
+  // video. The videola_video node type has two CCK fields, one for
+  // the full length video, and one for an optional preview video Below we check
+  // the user's permissions and determine which video to show them falling
+  // back on a still frame of the full length video as a last resort.
+  //
+  // This creates a new video attribute on the $node object which should be used
+  // at the theme layer when displaying the video. The above mentioned CCK
+  // fields SHOULD NOT be printed out by the theme as they could possibly
+  // circumvent our video access control.
+  if ($node->type == 'videola_video' && $op == 'alter') {
+    $video = array('is_still' => FALSE, 'is_free' => FALSE, 'is_full_video' => FALSE, 'is_preview' => FALSE);
+    // Check to see if this video has been flagged as a free video.
+    $video['is_free'] = ($node->field_videola_free[0]['value'] == 1) ? TRUE : FALSE;
+    $video['is_full_video'] = TRUE;
+
+    // Show the full video for users with the 'view archive videos' permission
+    // or if the video is free.
+    if (user_access('view archive videos') || $video['is_free']) {
+      $video['view'] = $node->content['field_videola_video']['#children'];
+    }
+
+    // If the currently logged in user has access to view video previews, and
+    // this node has a preview version of the video show them that.
+    else if (user_access('view promo videos') && !empty($node->field_videola_cf_preview_video[0]['view'])) {
+      $video['is_preview'] = TRUE;
+      $video['view'] = $node->content['field_videola_video_preview']['#children'];
+    }
+    // If the currently logged in user does not have access to view videos at
+    // all show them a screenshot of the full video.
+    else {
+      $video['view'] = $node->content['field_videola_video_still']['#children'];
+      $video['is_still'] = TRUE;
+    }
+
+    $node->video = $video;
+
+    // @todo
+    // Unset video related CCK fields to avoid confusion?
+  }
+}
+
+function videola_video_preprocess_node(&$vars) {
+  // Append the video to the top of the $content variable.
+  $vars['content'] = $vars['video']['view'] . $vars['content'];
+}
