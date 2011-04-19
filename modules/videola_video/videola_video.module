@@ -48,7 +48,12 @@ function videola_video_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
   }
 }
 
+/**
+ * Preprocess function for videola_video nodes.
+ */
 function videola_video_preprocess_node(&$vars) {
-  // Append the video to the top of the $content variable.
-  $vars['content'] = $vars['video']['view'] . $vars['content'];
+  if ($vars['node']->type == 'videola_video') {
+    // Append the video to the top of the $content variable.
+    $vars['content'] = $vars['video']['view'] . $vars['content'];
+  }
 }
