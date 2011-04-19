@@ -1,0 +1,14 @@
+core = "6.x"
+dependencies[] = "features"
+dependencies[] = "semanticviews"
+dependencies[] = "term_node_count"
+description = "The taxonomy and Views to browse videos"
+
+features[taxonomy][] = "categories"
+features[views][] = "videola_video_topics"
+features[views_api][] = "api:2"
+
+name = "Videola Browser"
+package = "Features"
+project = "videola_browser"
+version = "6.x-1.0-alpha"
