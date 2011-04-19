@@ -17,7 +17,7 @@
  *   'count' => (int) Total number of videos provided by the module.
  *   'sum' => (int) Total length of all videos combined in seconds.
  */
-function hook_videola_video_totals() {
+function hook_videola_core_video_totals() {
   return array(
     'mymodule' => array(
       'count' => 5,

@@ -6,14 +6,14 @@
 /**
  * Implements hook_install().
  */
-function videola_install() {
-  videola_update_6000();
+function videola_core_install() {
+  videola_core_update_6000();
 }
 
 /**
  * Add a 'declined' order status for uc_order_statuses.
  */
-function videola_update_6000() {
+function videola_core_update_6000() {
   $t = get_t();
   $ret = array();
   $ret[] = update_sql("INSERT INTO {uc_order_statuses} (order_status_id, title, state, weight, locked) VALUES ('declined', 'Declined', 'post_checkout', 20, 1)");

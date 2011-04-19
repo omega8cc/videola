@@ -6,7 +6,7 @@
 /**
  * Implementation of hook_drush_comman().
  */
-function videola_drush_command() {
+function videola_core_drush_command() {
   $items = array();
   $items['videola-generate-orders'] = array(
     'description' => "Generate random Ubercart orders.",
@@ -40,7 +40,7 @@ function videola_drush_command() {
 /**
  * Implements hook_drush_help().
  */
-function videola_drush_help($section) {
+function videola_core_drush_help($section) {
   switch ($section) {
     case 'drush:videola-generate-subscriptions':
       return dt("This command will generate a given number of random orders.");

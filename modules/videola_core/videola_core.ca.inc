@@ -3,7 +3,7 @@
 /**
  * Implements hook_ca_predicate().
  */
-function videola_ca_predicate() {
+function videola_core_ca_predicate() {
   $predicates = array();
   $predicates['videola_renewal_failed'] = array(
     '#title' => t('Update order status when renewal fails.'),
