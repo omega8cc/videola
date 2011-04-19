@@ -343,7 +343,7 @@ function videola_core_field_formatter_info() {
 function theme_videola_core_formatter_videola_duration($element) {
   $hhmmss = _videola_core_seconds_to_hhmmss($element['#item']['value']);
   $output = '';
-  if (isset($hhmmss['hours']) {
+  if (isset($hhmmss['hours'])) {
     $output = check_plain($hhmmss['hours']) . 'h:' . check_plain($hhmmss['mins']) . 'm';
   }
   else {
