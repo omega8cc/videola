@@ -1,0 +1,364 @@
+<?php
+
+require_once('videola.ca.inc');
+
+/**
+ * Implementation of hook_perm()
+ */
+function videola_perm() {
+  return array('view archive videos', 'view promo videos');
+}
+
+/**
+ * Implementation of hook_menu()
+ */
+function videola_menu() {
+  $items = array();
+  $items['orders'] = array(
+    'title' => 'View your orders',
+    'page callback' => 'videola_redirector',
+    'page arguments' => array('orders'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  $items['cancel'] = array(
+    'title' => 'Cancel membership',
+    'page callback' => 'videola_redirector',
+    'page arguments' => array('cancel'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_block().
+ */
+function videola_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case 'list':
+      $blocks['my_subscription'] = array(
+        'info' => t('My subscription details'),
+      );
+      return $blocks;
+    case 'view':
+      switch ($delta) {
+        case 'my_subscription':
+          global $user;
+          $block = array(
+            'subject' => t('My subscription'),
+            'content' => videola_my_subscription_block($user->uid),
+          );
+          return $block;
+      }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function videola_theme($existing, $type, $theme, $path) {
+  return array(
+    'videola_my_subscription_block' => array(
+      'arguments' => array('account' => NULL, 'subscription' => NULL, 'order' => NULL),
+      'template' => 'videola-my-subscription-block'
+    ),
+    'videola_formatter_videola_duration' => array(
+      'arguments' => array('element' => NULL)
+    ),
+  );
+}
+
+/**
+ * Implements hook_user().
+ */
+function videola_user($op, &$edit, &$account, $category = NULL) {
+  switch ($op) {
+    case 'after_update':
+      if (module_exists('pathauto')) {
+        // Force the pathauto alias for the user's user/UID page to update when
+        // they change their username no matter what pathauto settings say to
+        // do.
+        // In order to do this we need to temporarily override the
+        // pathauto_update_action and set it to "2" which equates to "Create new
+        // alias and remove old one.".
+        global $conf;
+        $conf_old = $conf['pathauto_update_action'];
+        $conf['pathauto_update_action'] = 2;
+        pathauto_user_update_alias($account, 'update');
+        $conf['pathauto_update_action'] = $conf_old;
+      }
+      break;
+  }
+}
+
+/**
+ * Builds body of My subscription block.
+ *
+ * @param $uid
+ *   The user ID of the member whose subscription data should be shown.
+ */
+function videola_my_subscription_block($uid) {
+  $subscription = NULL;
+  $order = NULL;
+
+  // Get user information.
+  $account = user_load($uid);
+
+  // Get list of all subscriptions associated with this user, newest first.
+  $fees = uc_recurring_get_user_fees($uid);
+  if ($fees) {
+
+    // Load the latest one.
+    $latest_fee = array_pop($fees);
+    $subscription = uc_recurring_fee_user_load($latest_fee->rfid);
+
+    // Load its corresponding order.
+    $order = uc_order_load($subscription->order_id);
+    
+    // Prepare some nice variables for the template.
+    $order->full_name = check_plain($order->billing_first_name . ' ' . $order->billing_last_name);
+    // @todo: Figure out a way to get the last 4 digits. Hrm.
+    $order->last_4 = '****';
+    $order->address = uc_order_address($order, 'billing');
+    $subscription->type = check_plain($order->products[0]->title);
+
+    // Get current plan name (independent if they have been billed for it yet b/c they switched)
+    $product_node = $subscription->data['nid'];
+    $product_attributes = uc_attribute_load_product_attributes($product_node);
+    $fee_amount = $subscription->fee_amount;
+    foreach($product_attributes[1]->options as $option=>$attribute) {
+      if ($fee_amount == $attribute->price) {
+        $subscription->frequency = $attribute->name;
+      }
+    }
+  }
+
+  return isset($order) ?  theme('videola_my_subscription_block', $account, $subscription, $order) : NULL;
+}
+
+/**
+ * Menu callback for /cancel and /orders
+ */
+function videola_redirector($type) {
+  global $user;
+  if ($user->uid) {
+    // don't let any destination param get to drupal_goto()
+    unset($_REQUEST['destination']);
+    switch ($type) {
+      case 'cancel':
+        // check access to menu
+        $item = menu_get_item('user/' . $user->uid . '/recurring-fees');
+        if ($item['access']) {
+          drupal_goto('user/' . $user->uid . '/recurring-fees');
+          break;
+        }
+        drupal_set_message(t('You do not appear to have a current membership.'));
+      case 'orders':
+        $item = menu_get_item('user/' . $user->uid . '/orders');
+        if ($item['access']) {
+          drupal_goto('user/' . $user->uid . '/orders');
+          break;
+        }
+        drupal_set_message(t('You do not have any orders'));
+      default :
+        $item = menu_get_item('user/' . $user->uid . '/edit');
+        if ($item['access']) {
+          drupal_goto('user/' . $user->uid . '/edit');
+          break;
+        }
+        else {
+          drupal_not_found();
+        }
+    }
+  }
+  else {
+    // they need to login before they can see orders or cancel
+    drupal_set_message(t("You'll need to log in."));
+    drupal_goto('user/login', drupal_get_destination());
+  }
+}
+
+
+/**
+ * Implementation of hook_menu_alter().
+ */
+function videola_menu_alter(&$callbacks) {
+  // Move the defaults from user/{uid} to user/{uid}/view
+  $callbacks['user/%user/view'] += $callbacks['user/%user_uid_optional'];
+  
+  // Hide the default "view" user tab (Can still be accessed via user/{uid}/view)
+  $callbacks['user/%user/view']['type'] = MENU_CALLBACK;
+  
+  // Set 'edit' to default task
+  $callbacks['user/%user_category/edit']['type'] = MENU_DEFAULT_LOCAL_TASK;
+  
+  // Change the callback & access check of the main user link
+  $callbacks['user/%user_uid_optional']['page callback'] = 'user_edit';
+  $callbacks['user/%user_uid_optional']['access callback'] = 'user_edit_access';
+  
+  // Use our custom title callback
+  $callbacks['user/%user_uid_optional']['title callback'] = 'videola_user_link_title';
+  
+}
+
+/**
+ * Menu title callback for user account link
+ */
+function videola_user_link_title($account) {
+  return $account->name;
+}
+
+/**
+ * Implementation of hook_form_alter().
+ *
+ * Remove collapsible state from all fieldsets on the cart/checkout page.
+ */
+function videola_form_uc_cart_checkout_form_alter(&$form, &$form_state) {
+  // Disable collapsible fieldsets for all panes.
+  foreach($form['panes'] as $key => $pane) {
+    unset($form['panes'][$key]['#collapsible']);
+    unset($form['panes'][$key]['#collapsed']);
+  }
+
+  // Discard the @description from the billing address pane. We are only
+  // collecting the user's first and last name so the message asking for their
+  // address is a little misleading.
+  unset($form['panes']['billing']['#descrption']);
+}
+
+/**
+ * Implementation of hook_form_alter().
+ *
+ * Remove the contact form selection from user account settings.
+ */
+function videola_form_user_profile_form_alter(&$form, &$form_state) {
+  $form['contact']['contact']['#value'] = FALSE;
+  $form['contact']['#access'] = FALSE;
+}
+
+function videola_video_totals() {
+  static $totals;
+  if (!isset($totals)) {
+    $totals = array('count' => 0, 'sum' => 0);
+    $return = module_invoke_all('videola_video_totals');
+    foreach ($return as $module => $values) {
+      $totals['count'] = $totals['count'] + $values['count'];
+      $totals['sum'] = $totals['sum'] + $values['sum'];
+    }
+
+    // Number of videos, length of videos combined. Sum is in seconds.
+    $seconds = $totals['sum'];
+    $totals['time'] = _videola_seconds_to_hhmmss($totals['sum']);
+  }
+  return $totals;
+}
+
+/**
+ * Helper function; Convert seconds to an array of hours, minutes and seconds.
+ *
+ * @param $seconds
+ *   (int) Number of seconds to convert.
+ *
+ * @return
+ *   An associative array containing the keys 'hours', 'mins', 'secs'.
+ */
+function _videola_seconds_to_hhmmss($seconds) {
+  $totals = array();
+  $units = array('hours' => 3600, 'mins' => 60, 'secs' => 1);
+  foreach ($units as $key => $value) {
+    if ($seconds >= $value) {
+      $totals[$key]= floor($seconds / $value);
+      $seconds %= $value;
+    }
+  }
+  return $totals;
+}
+
+function videola_filter($op, $delta = 0, $format = -1, $text = '') {
+  // The "list" operation provides the module an opportunity to declare both how
+  // many filters it defines and a human-readable name for each filter. Note that
+  // the returned name should be passed through t() for translation.
+  if ($op == 'list') {
+    return array(
+      0 => t('Videola video totals substitution'),
+    );
+  }
+
+  // All operations besides "list" provide a $delta argument so we know which
+  // filter they refer to. We'll switch on that argument now so that we can
+  // discuss each filter in turn.
+  switch ($delta) {
+
+    // First we define the simple string substitution filter.
+    case 0:
+
+      switch ($op) {
+        // This description is shown in the administrative interface, unlike the
+        // filter tips which are shown in the content editing interface.
+        case 'description':
+          return t('Substitutes values for [video_count], [video_hours], [video_minutes], [video_seconds]');
+
+        // We don't need the "prepare" operation for this filter, but it's required
+        // to at least return the input text as-is.
+        case 'prepare':
+          return $text;
+
+        // The actual filtering is performed here. The supplied text should be
+        // returned, once any necessary substitutions have taken place.
+        case 'process':
+          $totals = videola_video_totals();
+          $replacements = array(
+            '[video_count]' => $totals['count'],
+            '[video_hours]' => $totals['time']['hours'],
+            '[video_minutes]' => $totals['time']['mins'],
+            '[video_seconds]' => $totals['time']['secs'],
+          );
+          return strtr($text, $replacements);
+
+
+      }
+      break;
+  }
+}
+
+/**
+ * Imlements CCK's hook_field_formatter_info().
+ */
+function videola_field_formatter_info() {
+  return array(
+    'videola_duration' => array(
+      'label' => 'Duration (seconds to 2h:30m)',
+      'field types' => array('number_integer'),
+    ),
+  );
+}
+
+/**
+ * Theme function; Formatter for videola_duration.
+ *
+ * Treats an integer field as a number of seconds and outputs it in the format
+ * hh:mm:ss.
+ */
+function theme_videola_formatter_videola_duration($element) {
+  $hhmmss = _videola_seconds_to_hhmmss($element['#item']['value']);
+  $output = '';
+  if ($hhmmss['hours']) {
+    $output = check_plain($hhmmss['hours']) . 'h:' . check_plain($hhmmss['mins']) . 'm';
+  }
+  else {
+    $output = check_plain($hhmmss['mins']) . 'm';
+  }
+  return $output;
+}
+
+/**
+ * Implementation of hook_form_FORMID_alter().
+ *
+ * Cleans up the Update billing form screen, moving help text to the top of the form.
+ * Depends on patch from http://drupal.org/node/1074400 to add that info to the form.
+ */
+function videola_form_uc_recurring_authorizenet_cim_update_form_alter(&$form, &$form_state) {
+  unset($form['bill_to']['#description']); // Hide the original help text.
+  $form['cc_data']['#description'] = t('For your security, we do not store any of your credit card information. Therefore, to update your billing information you must also provide your credit card information.');
+}

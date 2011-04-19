@@ -1,0 +1,5 @@
+; $Id:$
+name = Videola Module
+description = Provides baseline functionality for Videola-based websites.
+core = 6.x
+package = "Videola"
