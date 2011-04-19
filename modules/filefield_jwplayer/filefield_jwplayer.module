@@ -31,16 +31,19 @@ function filefield_jwplayer_theme() {
  * Theme function; Convert integers to their full text representation.
  */
 function theme_filefield_jwplayer_formatter_jwplayer($element) {
+  if (!isset($element['#item']['filepath'])) {
+    return '';
+  }
+
   // Build the jwplayer configuration array. And then use it to add the
   // necessary javascript to the page. Done in two steps to make it easier for
   // a theme to add additional configuration for JWPlayer.
   $config = filefield_jwplayer_player_config($element);
-
   $file_url = file_create_url($element['#item']['filepath']);
   $config['file'] = $file_url;
 
   filefield_jwplayer_add_player($element, $config);
-  $output = '<video id="filefield_jwplayer" src="' . $file_url . '" controls="controls" height="' . $config['height'] . '" width="' . $config['width'] . '"></video>';
+  $output = '<video id="'. $element['#field_name'] . '_player" src="' . $file_url . '" controls="controls" height="' . $config['height'] . '" width="' . $config['width'] . '"></video>';
   return $output;
 }
 
@@ -60,7 +63,7 @@ function filefield_jwplayer_add_player($element, $config) {
   // Convert $config array to Drupal.settings variables.
   $config = array(
     'filefield_jwplayer' => array(
-      'filefield_jwplayer' => $config,
+      $element['#field_name'] . '_player' => $config,
       // @todo - add error logging with ajaxlog module.
       //'error_log' => variable_get('cloudfrontvideo_error_log_enabled', TRUE),
     ),
