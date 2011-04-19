@@ -72,3 +72,13 @@ function videola_video_filefield_jwplayer_config_alter(&$config, $element) {
     $config['image'] = file_create_url($element['#node']->field_videola_video_still[0]['filepath']);
   }
 }
+
+/**
+ * Implementation of hook_videola_core_video_totals().
+ */
+function videola_cloudfront_videola_video_totals() {
+  $field = content_fields('field_videola_video_length');
+  $db_info = content_database_info($field);
+  $totals = db_fetch_array(db_query("SELECT COUNT(n.nid) as count, SUM(vv." . $db_info['columns']['value']['column'] . ") AS sum FROM {node} n INNER JOIN {" . $db_info['table'] . "} vv ON n.vid = vv.vid WHERE n.type = 'videola_video' AND n.status = 1 AND n.moderate = 0"));
+  return array('videola_video' => $totals);
+}
