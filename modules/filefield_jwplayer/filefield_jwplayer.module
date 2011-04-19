@@ -1,0 +1,98 @@
+<?php
+/**
+ * @file
+ * JWPlayer formatter for use with filefields.
+ */
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function filefield_jwplayer_field_formatter_info() {
+  return array(
+    'jwplayer' => array(
+      'label' => 'JWPlayer',
+      'field types' => array('filefield'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_theme().
+ */
+function filefield_jwplayer_theme() {
+  return array(
+    'filefield_jwplayer_formatter_jwplayer' => array(
+      'arguments' => array('element' => NULL)
+    ),
+  );
+}
+
+/**
+ * Theme function; Convert integers to their full text representation.
+ */
+function theme_filefield_jwplayer_formatter_jwplayer($element) {
+  // Build the jwplayer configuration array. And then use it to add the
+  // necessary javascript to the page. Done in two steps to make it easier for
+  // a theme to add additional configuration for JWPlayer.
+  $config = filefield_jwplayer_player_config($element);
+
+  $file_url = file_create_url($element['#item']['filepath']);
+  $config['file'] = $file_url;
+
+  filefield_jwplayer_add_player($element, $config);
+  $output = '<video id="filefield_jwplayer" src="' . $file_url . '" controls="controls" height="' . $config['height'] . '" width="' . $config['width'] . '"></video>';
+  return $output;
+}
+
+/**
+ * Add the javascript necessary for embedding the JWPlayer onto the page.
+ *
+ * @param $element
+ *   The CCK/filefield element.
+ * @param $config
+ *   An associative array of containing data to be passed to the jwplayer()
+ *   javascript method as configuration parameters.
+ */
+function filefield_jwplayer_add_player($element, $config) {
+  drupal_add_js(drupal_get_path('module', 'filefield_jwplayer') . '/jwplayer/jwplayer.js');
+  drupal_add_js(drupal_get_path('module', 'filefield_jwplayer') . '/filefield_jwplayer.js');
+
+  // Convert $config array to Drupal.settings variables.
+  $config = array(
+    'filefield_jwplayer' => array(
+      'filefield_jwplayer' => $config,
+      // @todo - add error logging with ajaxlog module.
+      //'error_log' => variable_get('cloudfrontvideo_error_log_enabled', TRUE),
+    ),
+  );
+  drupal_add_js($config, 'setting');
+}
+
+/**
+ * Helper function to build a $config array for JWPlayer.
+ */
+function filefield_jwplayer_player_config($element) {
+  // Setup some sane defaults. These can be overriden by another module using
+  // hook_filefield_jwplayer_config_alter(&$config).
+  $config = array(
+    'flashplayer' => url(drupal_get_path('module', 'filefield_jwplayer')  . '/jwplayer/player.swf', array('absolute' => TRUE)),
+    'bufferlength' => 10,
+    // @todo: these should be configurable
+    'height' => 480,
+    'width' => 854,
+    'stretching' => 'fill',
+  );
+
+  // Poster image. If there is a filefield choosen to be used as the poster
+  // image the field name will be stored in the $element['#item'] array and we
+  // can use it to grab the actual image here.
+  if (isset($element['#item']['poster_image'])) {
+    $image = file_create_url($element['#node']->{$element['#item']['poster_image']}[0]['filepath']);
+    $config['image'] = $image;
+  }
+
+  // Allow other modules to alter the $config array.
+  drupal_alter('filefield_jwplayer_config', $config, $element);
+
+  return $config;
+}
