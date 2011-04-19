@@ -159,6 +159,9 @@ dependencies[] = token
 dependencies[] = votingapi
 dependencies[] = webform
 
+; Videola
+dependencies[] = videola_core
+
 ; Custom
 dependencies[] = chaptermarkers
 
