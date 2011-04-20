@@ -74,12 +74,15 @@ function videola_video_strongarm() {
   $strongarm->name = 'content_extra_weights_videola_video';
   $strongarm->value = array(
     'title' => '-5',
-    'body_field' => '3',
-    'revision_information' => '5',
-    'author' => '4',
-    'options' => '6',
-    'comment_settings' => '7',
-    'menu' => '2',
+    'body_field' => '5',
+    'revision_information' => '7',
+    'author' => '6',
+    'options' => '8',
+    'comment_settings' => '9',
+    'menu' => '4',
+    'taxonomy' => '-4',
+    'path' => '10',
+    'flag' => '1',
   );
 
   $export['content_extra_weights_videola_video'] = $strongarm;
