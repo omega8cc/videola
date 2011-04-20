@@ -1,0 +1,226 @@
+<?php
+
+/**
+ * @file - Video History module for Drupal
+ * 
+ * By Jeff Robbins / Lullabot
+ *
+ * @todo
+ *  - Display percentage of video played
+ *  - Provide API call to get the user's latest playhead position for a given node/video
+ *  - Add support for Radioactivity
+ *  - Add support for Actions
+ *
+ */
+
+/**
+ * Implementation of hook_init()
+ */
+function vidhist_init() {
+  if (user_access('keep video viewing history') && arg(0) == 'node' && is_numeric(arg(1))) {
+    $nid = arg(1);
+    $path = drupal_get_path('module', 'vidhist');
+    
+    drupal_add_js($path . '/scripts/vidhist.js');
+    
+    // Get choosen player and include the corresponding JS.
+    // If no player has been choosed, use jwplayer by default.
+    // TODO: Validation should be added to ensure that the player exists.
+    $player = variable_get('vidhist_player', 'jwplayer');
+    drupal_add_js($path.'/scripts/players/vidhist_'.$player.'.js');
+    
+    drupal_add_js(array(
+      'vidHist' => array(
+        'interval' => variable_get('vidhist_interval', 60) * 1000,
+        'nid' => $nid,
+      )), 'setting');
+  }
+}
+
+/**
+ * Implementation of hook_menu()
+ */
+function vidhist_menu() {
+  $items = array();
+
+  $items['_vidhist'] = array(
+    'page callback' => 'vidhist_ajax',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  $items['admin/settings/vidhist'] = array(
+    'title' => 'Video History',
+    'description' => 'Settings for the Video History module',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vidhist_settings'),
+    'access arguments' => array('administer site configuration'),
+  );
+  return $items;
+}
+
+/**
+ * Implementation of hook_perm()
+ */
+function vidhist_perm() {
+  return array('keep video viewing history');
+}
+
+/**
+ * Implementation of hook_cron()
+ */
+function vidhist_cron() {
+  // clear errant "active" videos
+  // this may happen if user closes the tab, navigates to another page, or quits their browser
+  // while a video is playing
+  db_query("UPDATE {vidhist} SET auto=0 WHERE timestamp < %d", time() - variable_get('vidhist_interval', 60) - 30);
+}
+
+
+/**
+ * "Ajax" callback to receive viewing data from Javascript tracker
+ *
+ * Sent keys:
+ *  - nid:       node id
+ *  - delta:     video id on the page
+ *  - start:     start time for this viewing chunk
+ *  - end:       end time for this viewing chunk
+ *  - auto:      boolean indicating whether status was sent automatically (autosave)
+ *               or as a result of user interaction with the video
+ *  - token:     a (random) token to distinguish this viewing chunk
+ * Added by PHP:
+ *  - uid        user's id
+ *  - timestamp  current timestamp
+ *  - ip         user's ip address
+ */
+function vidhist_ajax() {
+  global $user;
+  
+  if ($user->uid && user_access('keep video viewing history')) {
+    $record->nid = (int)$_POST['nid'];
+    $record->delta = $_POST['delta'] ? $_POST['delta'] : '';
+    $record->start = (int)$_POST['start'];
+    $record->end = (int)$_POST['end'];
+    $record->viewtime = $_POST['end'] - $_POST['start'];
+    $record->auto = $_POST['auto'] ? 1 : 0;
+    $record->token = $_POST['token'];
+        
+    // do some validation on the post data
+    if (is_numeric($record->nid) && is_numeric($record->start) && is_numeric($record->end) && $record->viewtime > 10) {
+    
+      $record->uid = $user->uid;
+      $record->timestamp = time();
+      $record->ip = ip_address();
+      $record->latest = 1; // this is always the latest
+      
+      // check to see if there's an existing (autosaved) record with this token
+      $existing = db_result(db_query("SELECT nid FROM {vidhist} WHERE token='%s' AND nid=%d AND delta='%s' AND uid=%d", $record->token, $record->nid, $record->delta, $record->uid));
+      
+      // this probably isn't the right way to do this, but we're about to save the new info
+      // so we remove 'latest' from all instances of this nid/delta/user in the vidhist table
+      db_query("UPDATE {vidhist} SET latest=0 WHERE nid=%d AND delta='%s' AND uid=%d", $record->nid, $record->delta, $record->uid);
+      
+      if (!$record->auto) {
+        // @todo: if start time of this chunk is same as end time of previous, join chunks
+        
+        // Final save. Save and remove tokens from the db. 
+        if (!$existing) {
+          // this is a new (non auto) save, video was probably played for less than 1 min
+          db_query("INSERT INTO {vidhist} (nid, delta, start, end, viewtime, auto, token, uid, timestamp, ip, latest) VALUES (%d, '%s', %d, %d, %d, %d, %d, %d, %d, '%s', %d)", $record->nid, $record->delta, $record->start, $record->end, $record->viewtime, 0, 0, $record->uid, $record->timestamp, $record->ip, $record->latest);
+        }
+        else {
+          // video has been paused or shuttled - this is the final save of this chunk
+          db_query("UPDATE {vidhist} SET start=%d, end=%d, viewtime=%d, auto=0, token=0, timestamp=%d, ip='%s', latest=%d WHERE nid=%d AND uid=%d AND delta='%s' AND token=%d", $record->start, $record->end, $record->viewtime, $record->timestamp, $record->ip, $record->latest, $record->nid, $record->uid, $record->delta, $record->token);
+        }
+      }
+      else {
+        // This is an autosave (video is still playing).
+        // If video is existing, we update. Otherwise it's a new save.
+        $update = $existing ? array('token', 'nid', 'delta', 'uid') : array();
+        drupal_write_record('vidhist', $record, $update);
+      }
+    }
+    print t('Got it!');
+  }
+  else {
+    print t('Not so much');
+  }
+}
+
+function vidhist_settings() {
+  $form = array();
+  $period = drupal_map_assoc(array(15, 30, 60, 120, 180, 300, 600, 1200, 1800, 3600), 'format_interval');
+  $period = array(0 => t('never')) + $period;
+  $players = array(
+    'jwplayer' => 'JW Player',
+    'ooyala' => 'Ooyala Player',
+  ); 
+  
+  $form['vidhist_player'] = array(
+    '#type' => 'select',
+    '#title' => t('Integrated video player'),
+    '#options' => $players,
+    '#description' => t("When a video is playing, how often should the playhead position be autosaved to the server? Lower rates may affect site performance."),
+    '#default_value' => variable_get('vidhist_interval', 60),
+  );
+  
+  $form['vidhist_interval'] = array(
+    '#type' => 'select',
+    '#title' => t('Playhead save rate'),
+    '#options' => $period,
+    '#description' => t("When a video is playing, how often should the playhead position be autosaved to the server? Lower rates may affect site performance."),
+    '#default_value' => variable_get('vidhist_interval', 60),
+  );
+  
+  return system_settings_form($form);
+}
+
+/**
+ * Retrieve total time watched for the given video.
+ *
+ * @param $nid
+ *   Node ID of the video to retrieve total watched time for.
+ * @param $start
+ *   Optional start timestamp. Only data recorded after the $start timestamp
+ *   will be included in the total. Defaults to 0.
+ * @param $end
+ *   Optional end timestamp. Only data recorded before the $end timestamp will
+ *   be included in the total. Defaults to current time.
+ * @param $reset
+ *   Optionally reset the static cache.
+ *
+ * @return
+ *   The total time in seconds that a video has been watched in the given
+ *   timeframe or FALSE if no data can be retrieved.
+ */
+function vidhist_viewtime_summary($nid, $start = NULL, $end = NULL, $reset = FALSE) {
+  static $vidhist_summaries;
+
+  if (!isset($vidhist_summaries) || $reset) {
+    $vidhist_summaries = array();
+  }
+
+  $start = isset($start) ? $start : 0;
+  $end = isset($end) ? $end : time();
+
+  $key = $nid . ':' . $start . ':' . $end;
+
+  if (!isset($vidhist_summaries[$key])) {
+  $result = db_query('SELECT SUM(viewtime) AS total_time FROM {vidhist} WHERE timestamp > %d AND timestamp < %d AND nid = %d GROUP BY nid', $start, $end, $nid);
+    if ($summary = db_fetch_array($result)) {
+      $vidhist_summaries[$key] = $summary['total_time'];
+    }
+  }
+
+  return isset($vidhist_summaries[$key]) ?  $vidhist_summaries[$key] : FALSE;
+}
+
+/**
+  * Implementation of hook_views_api.
+  * Notifies the Views module that we're compatible with a particular API revision.
+  */
+function vidhist_views_api() {
+  return array(
+    'api' => 2,
+    'path' => drupal_get_path('module', 'vidhist') . '/views',
+  );
+}

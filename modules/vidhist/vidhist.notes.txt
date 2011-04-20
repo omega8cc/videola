@@ -1,0 +1,18 @@
+Views integration is tricky. It's best that we think about the RESULTS that we want to display with Video History.
+
+- Given a node id, show amount of time it was watched in a given period of time.
+- Given a user id, show video watching history in a given period of time.
+- Show videos being watched now
+- 
+
+
+Time formatting:
+
+time       : 26:32:26
+hours-short: 26h:32m:26s
+hours-med:   26 hrs, 32 min, 26 sec
+hours-long:  26 hours, 32 minutes, 26 seconds
+years-short: 4d:22h:32m:26s
+years-med:   4 dys, 26 hrs, 32 min, 26 sec
+years-long:  4 days, 26 hours, 32 minutes, 26 seconds
+custom

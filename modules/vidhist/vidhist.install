@@ -1,0 +1,124 @@
+<?php
+
+function vidhist_schema() {
+  $schema['vidhist'] = array(
+    'description' => t('Video history data'),
+    'fields' => array(
+      'vhid' => array(
+        'description' => t('The primary identifier for a history record.'),
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => t('User ID'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'nid' => array(
+        'description' => t('Node ID'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'delta' => array(
+        'description' => t('Video id within the node'),
+        'type' => 'varchar',
+        'length' => '128',
+        'not null' => TRUE,
+      ),
+      'start' => array(
+        'description' => t('Chunk start time'),
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'end' => array(
+        'description' => t('Chunk end time'),
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'viewtime' => array(
+        'description' => t('Length of chunk'),
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'timestamp' => array(
+        'description' => t('When was this saved to the database'),
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'auto' => array(
+        'description' => t('Was this an autosave?'),
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'latest' => array(
+        'description' => t('Is this the latest view by this user of this video delta on this node?'),
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'ip' => array(
+        'description' => t('IP of user'),
+        'type' => 'varchar',
+        'length' => '12',
+        'not null' => TRUE,
+      ),
+      'token' => array(
+        'description' => t('Random token id of this chunk'),
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('vhid'),
+  );
+  return $schema;
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function vidhist_install() {
+  // Create tables.
+  drupal_install_schema('vidhist');
+  
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function vidhist_uninstall() {
+  // Remove tables.
+  drupal_uninstall_schema('vidhist');
+}
+
+/**
+ * Add a field to indicate if this is the latest view for a user on a video.
+ */
+function vidhist_update_6100() {
+  $ret = array();
+  db_add_field($ret, 'vidhist', 'latest', array(
+    'description' => t('Is this the latest view by this user of this video delta on this node?'),
+    'type' => 'int',
+    'not null' => TRUE,)
+  );
+  return $ret;
+}
+
+/**
+ * Add a primary key field to the vidhist table so that it can be used as a base
+ * table for views.
+ */
+function vidhist_update_6101() {
+  $ret = array();
+
+  $field = array(
+    'description' => t('The primary identifier for a history record.'),
+    'type' => 'serial',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+  );
+  db_add_field($ret, 'vidhist', 'vhid', $field, array('primary key' => array('vhid')));
+
+  return $ret;
+}
