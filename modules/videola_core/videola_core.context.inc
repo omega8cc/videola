@@ -33,12 +33,6 @@ function videola_core_context_default_contexts() {
           'region' => 'sidebar_first',
           'weight' => 1,
         ),
-        'search-0' => array(
-          'module' => 'search',
-          'delta' => 0,
-          'region' => 'header_last',
-          'weight' => 0,
-        ),
       ),
     ),
   );
