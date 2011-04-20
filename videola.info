@@ -194,6 +194,9 @@ variables[site_mail] = testing@testing.com
 ;variables[site_frontpage] = node/1
 ;variables[theme_settings][toggle_node_info_page] = 0
 
+variables[pathauto_node_pattern] = 0
+variables[pathauto_node_videola_video_pattern] = videos/[title-raw]
+
 ; You may also want to set the clean url variable if you don't need clean urls. 
 ; Since we bypassed the configuration screen, it is enabled by default, so to 
 ; disable it you'll want to uncomment this line:
