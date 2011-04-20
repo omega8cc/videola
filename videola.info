@@ -139,7 +139,6 @@ dependencies[] = libraries
 dependencies[] = login_destination
 dependencies[] = logintoboggan
 dependencies[] = mass_contact
-dependencies[] = password_change
 dependencies[] = pathauto
 dependencies[] = ed_readmore
 dependencies[] = radioactivity
