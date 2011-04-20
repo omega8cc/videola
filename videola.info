@@ -70,6 +70,7 @@ dependencies[] = userreference
 ; Earl
 dependencies[] = ctools
 dependencies[] = views
+dependencies[] = views_ui
 ;dependencies[] = panels
 ; Views
 dependencies[] = draggableviews
@@ -126,6 +127,7 @@ dependencies[] = boxes
 dependencies[] = comment_notify
 dependencies[] = commentmail
 dependencies[] = context
+dependencies[] = context_ui
 dependencies[] = date
 dependencies[] = devel
 dependencies[] = diff
