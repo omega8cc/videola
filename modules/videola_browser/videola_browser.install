@@ -2,7 +2,15 @@
 
 
 
+/**
+ * Implements hook_install().
+ */
 function videola_browser_install() {
+  videola_browser_update_6000();
+}
+
+
+function videola_browser_update_6000() {
   $ret = array();
 
   // Add terms to Categories
