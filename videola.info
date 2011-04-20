@@ -160,6 +160,8 @@ dependencies[] = videola_browser
 
 ; Custom
 dependencies[] = chaptermarkers
+dependencies[] = filefield_jwplayer
+dependencies[] = vidhist
 
 ; -----------------------------------------------------------------------------
 ;                                   Users
