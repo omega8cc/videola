@@ -1,10 +1,8 @@
-; $Id:$
-name = Videola Core
-description = Provides baseline functionality for Videola-based websites.
-core = 6.x
-package = "Videola"
-
+core = "6.x"
 dependencies[] = "context"
-
+dependencies[] = "search"
+description = "Provides baseline functionality for Videola-based websites."
 features[context][] = "videola_core_global"
 features[ctools][] = "context:context:3"
+name = "Videola Core"
+package = "Videola"
