@@ -51,6 +51,7 @@ dependencies[] = help
 dependencies[] = menu
 dependencies[] = node
 dependencies[] = path
+dependencies[] = search
 dependencies[] = system
 dependencies[] = user
 
