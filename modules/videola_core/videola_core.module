@@ -1,6 +1,8 @@
 <?php
 
 require_once('videola_core.ca.inc');
+include_once('videola_core.features.inc');
+
 
 /**
  * Implementation of hook_perm()
