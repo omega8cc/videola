@@ -193,10 +193,6 @@ users[superduper][status] = 1
 variables[site_name] = Videola
 variables[site_mail] = testing@testing.com
 
-;variables[site_footer] = Profiler Example
-;variables[site_frontpage] = node/1
-;variables[theme_settings][toggle_node_info_page] = 0
-
 variables[pathauto_node_pattern] = 0
 variables[pathauto_node_videola_video_pattern] = videos/[title-raw]
 
@@ -208,6 +204,8 @@ variables[pathauto_node_videola_video_pattern] = videos/[title-raw]
 ; -----------------------------------------------------------------------------
 ;                                    Nodes
 ; -----------------------------------------------------------------------------
+
+
 nodes[2][type] = videola_video
 nodes[2][title] = First Video
 nodes[2][uid] = 1
