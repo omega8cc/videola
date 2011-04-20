@@ -154,6 +154,9 @@ dependencies[] = token
 
 ; Videola
 dependencies[] = videola_core
+dependencies[] = videola_video
+dependencies[] = videola_dashboard
+dependencies[] = videola_queue
 dependencies[] = videola_browser
 
 ; Custom
