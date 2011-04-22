@@ -63,7 +63,13 @@ function videola_video_preprocess_node(&$vars) {
  *
  * @see filefield_jwplayer.module
  */
-
+function videola_video_filefield_jwplayer_config_alter(&$config, $element) {
+  // If there is a still image from the video attached to the node add it as a
+  // poster image for JWPlayer.
+  if (isset($element['#node']->field_videola_video_still[0]['filepath'])) {
+    $config['image'] = file_create_url($element['#node']->field_videola_video_still[0]['filepath']);
+  }
+}
 
 /**
  * Implementation of hook_videola_core_video_totals().
