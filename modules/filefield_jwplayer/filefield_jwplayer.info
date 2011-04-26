@@ -1,4 +1,0 @@
-name = FileField JWPlayer
-description = Provider a JWPlayer field formatter for filefields.
-core = 6.x
-dependencies[] = filefield
