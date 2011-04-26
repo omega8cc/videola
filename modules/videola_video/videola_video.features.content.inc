@@ -137,7 +137,7 @@ function videola_video_content_default_fields() {
     'description_field' => '0',
     'widget' => array(
       'file_extensions' => 'mp4',
-      'file_path' => 'videola_videos',
+      'file_path' => 'private/videola_videos',
       'progress_indicator' => 'bar',
       'max_filesize_per_file' => '',
       'max_filesize_per_node' => '',

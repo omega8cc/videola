@@ -40,6 +40,16 @@ function videola_profile_tasks(&$task, $url) {
     node_type_save($type);
   }
 
+  // Setup directory and .htaccess file for private_download module.
+  $filename = file_directory_path() .'/'. $form_state['values']['private_download_directory'] .'/.htaccess';
+  // Grab the system settings form for the private download module and use the
+  // default .htaccess file contents from there.
+  $form = private_download_admin_form();
+  $htaccess = $form['private_download_htaccess']['#default_value'];
+  if (!private_download_write($filename, $htaccess)) {
+    drupal_set_message(t('Unable to write data to file: !filename', array('!filename' => $filename)), 'error', FALSE);
+  }
+
   // Let profiler module do it's thing.
   include_once('sites/all/libraries/profiler/profiler/profiler_api.inc');
   return profiler_profile_tasks(profiler_v2_load_config('videola'), $task, $url);
