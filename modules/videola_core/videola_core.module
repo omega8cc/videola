@@ -30,6 +30,11 @@ function videola_core_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+  $items['videola-front'] = array(
+    'page callback' => 'videola_core_front_page',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
   return $items;
 }
 
@@ -181,6 +186,13 @@ function videola_core_redirector($type) {
   }
 }
 
+/**
+ * Menu callback for /videola-front; Create a blank page to be used as the sites
+ * default front page.
+ */
+function videola_core_front_page() {
+  return ' ';
+}
 
 /**
  * Implementation of hook_menu_alter().

@@ -194,6 +194,7 @@ users[superduper][status] = 1
 ; -----------------------------------------------------------------------------
 variables[site_name] = Videola
 variables[site_mail] = testing@testing.com
+variables[site_frontpage] = videola-front
 
 variables[pathauto_node_pattern] = 0
 variables[pathauto_node_videola_video_pattern] = videos/[title-raw]

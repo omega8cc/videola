@@ -1,0 +1,92 @@
+<?php
+/**
+ * @file
+ *
+ * HTTP Pseudeo streaming implemented in PHP.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function pseudostream_menu() {
+  $items = array();
+  $items['_pseudostream'] = array(
+    'title' => 'pseudostream',
+    'page callback' => 'pseudostream_deliver',
+    'access callback' => 'pseudostream_access',
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function pseudostream_access() {
+  if (module_exists('private_download') && !user_access('access private download directory')) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+function pseudostream_deliver($path) {
+  $args = func_get_args();
+  $filepath = implode('/', $args);
+
+  $file = db_fetch_object(db_query('SELECT * FROM {files} WHERE filepath = "%s" LIMIT 1', $filepath));
+
+  if (file_exists(file_create_path($file->filepath))) {
+    $headers = module_invoke_all('file_download', $filepath);
+    print_r($headers); exit;
+    if (in_array(-1, $headers)) {
+      return drupal_access_denied();
+    }
+    if (count($headers)) {
+      _pseudostream_deliver($file, $headers);
+    }
+  }
+
+  return drupal_not_found();
+}
+
+function _pseudostream_deliver($file, $headers) {
+  // Get seek position.
+  // @todo - make this key configurable as different players use a different
+  // $_GET param.
+  $seek_position = intval($_GET['start']);
+
+  // Stay clean.
+  if (ob_get_level()) {
+    ob_end_clean();
+  }
+
+  // IE cannot download private files because it cannot store files downloaded
+  // over https in the browser cache. The problem can be solved by sending
+  // custom headers to IE. See http://support.microsoft.com/kb/323308/en-us
+  if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) {
+    drupal_set_header('Cache-Control: private');
+    drupal_set_header('Pragma: private');
+  }
+
+  foreach ($headers as $header) {
+    // To prevent HTTP header injection, we delete new lines that are
+    // not followed by a space or a tab.
+    // See http://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2
+    $header = preg_replace('/\r?\n(?!\t| )/', '', $header);
+    drupal_set_header($header);
+  }
+
+  // If this is an FLV file we output the FLV file header as well.
+  // @todo - this ...
+
+  $file_handle = fopen(file_create_path($file->filepath), 'rb');
+
+  // Seek to requested position in file.
+  fseek($file_handle, $seek_position);
+  // Transfer the file.
+  while (!feof($file_handle)) {
+    // Transfer the file in 1024 byte chunks to save memory.
+    print fread($file_handle, 1024);
+  }
+
+  fclose($file_handle);
+  exit();
+}
