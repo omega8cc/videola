@@ -120,6 +120,7 @@ dependencies[] = better_formats
 dependencies[] = bueditor
 
 ; Other
+dependencies[] = admin_menu
 dependencies[] = adminrole
 dependencies[] = advanced_help
 dependencies[] = amazon_s3
