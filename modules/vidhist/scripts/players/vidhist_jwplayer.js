@@ -13,12 +13,10 @@ Drupal.vidhist_jwplayer = function(player) {
   Drupal.vidHist.setPlayer(player);
   
   player.onTime(function(params){
-    console.log('time change');
     Drupal.vidHist.event.playheadTimeChanged(params.position, params.position);
   });
   
   player.onPlay(function(oldstate){
-    console.log('playing');
     Drupal.vidHist.event.playing();
   });
   
