@@ -1,16 +1,6 @@
 <?php
 
 /**
- * Implementation of hook_ctools_plugin_api().
- */
-function videola_queue_ctools_plugin_api() {
-  list($module, $api) = func_get_args();
-  if ($module == "context" && $api == "context") {
-    return array("version" => 3);
-  }
-}
-
-/**
  * Implementation of hook_flag_default_flags().
  */
 function videola_queue_flag_default_flags() {
@@ -44,13 +34,11 @@ function videola_queue_flag_default_flags() {
     'show_on_form' => 1,
     'access_author' => '',
     'i18n' => 0,
-    'flag_confirmation' => '',
-    'unflag_confirmation' => '',
-    'api_version' => 2,
     'module' => 'videola_queue',
     'locked' => array(
       '0' => 'name',
     ),
+    'api_version' => 2,
   );
   return $flags;
 }
