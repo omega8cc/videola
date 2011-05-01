@@ -3,11 +3,12 @@
  * 
  * It needs to be initialized on ready since Drupal.behaviors is too early.
  */
+
 $(document).ready(function() {
-  jwplayer().onReady(Drupal.jwplayer(jwplayer()));
+  jwplayer().onReady(Drupal.vidhist_jwplayer(jwplayer()));
 });
 
-Drupal.jwplayer = function(player) {
+Drupal.vidhist_jwplayer = function(player) {
 
   Drupal.vidHist.setPlayer(player);
   
@@ -29,5 +30,3 @@ Drupal.jwplayer = function(player) {
     Drupal.vidHist.event.stoped();
   });
 };
-
-
