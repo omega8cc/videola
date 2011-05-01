@@ -23,7 +23,30 @@ function videola_dashboard_context_default_contexts() {
       ),
     ),
   );
-  $context->reactions = array();
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'user-0' => array(
+          'module' => 'user',
+          'delta' => 0,
+          'region' => 'sidebar_last',
+          'weight' => 0,
+        ),
+        'boxes-videola_anon_front' => array(
+          'module' => 'boxes',
+          'delta' => 'videola_anon_front',
+          'region' => 'content_top',
+          'weight' => 0,
+        ),
+        'views-videola_video_topics-block_1' => array(
+          'module' => 'views',
+          'delta' => 'videola_video_topics-block_1',
+          'region' => 'content_top',
+          'weight' => 1,
+        ),
+      ),
+    ),
+  );
   $context->condition_mode = 1;
 
   // Translatables
@@ -50,7 +73,30 @@ function videola_dashboard_context_default_contexts() {
       ),
     ),
   );
-  $context->reactions = array();
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'videola_core-my_subscription' => array(
+          'module' => 'videola_core',
+          'delta' => 'my_subscription',
+          'region' => 'sidebar_last',
+          'weight' => 0,
+        ),
+        'views-videola_queue-block_1' => array(
+          'module' => 'views',
+          'delta' => 'videola_queue-block_1',
+          'region' => 'content_top',
+          'weight' => 0,
+        ),
+        'views-videola_video_topics-block_1' => array(
+          'module' => 'views',
+          'delta' => 'videola_video_topics-block_1',
+          'region' => 'content_top',
+          'weight' => 1,
+        ),
+      ),
+    ),
+  );
   $context->condition_mode = 1;
 
   // Translatables
