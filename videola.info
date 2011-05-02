@@ -109,7 +109,7 @@ dependencies[] = test_gateway
 dependencies[] = uc_recurring_hosted
 dependencies[] = uc_recurring
 dependencies[] = uc_recurring_product
-;dependencies[] = uc_recurring_subscription
+dependencies[] = uc_recurring_subscription
 dependencies[] = uc_recurring
 
 ; Pretty
@@ -159,6 +159,7 @@ dependencies[] = videola_video
 dependencies[] = videola_dashboard
 dependencies[] = videola_queue
 dependencies[] = videola_browser
+dependencies[] = videola_ubercart
 
 ; Custom
 dependencies[] = chaptermarkers

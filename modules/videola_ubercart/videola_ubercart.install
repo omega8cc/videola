@@ -1,0 +1,92 @@
+<?php
+
+/**
+ * Implementation of hook_install().
+ *
+ * Random crap to get our Ubercart installation setup.
+ */
+function videola_ubercart_install() {
+  // Add the subscription product class
+  db_query("INSERT INTO {uc_product_classes} (pcid, name, description) VALUES ('%s', '%s', '%s')", 'subscription', 'Subscription', 'A subscription for your site.');
+  uc_product_node_info(TRUE);
+  variable_set('node_options_subscription', variable_get('node_options_product', array('status', 'promote')));
+  if (module_exists('comment')) {
+    variable_set('comment_subscription', variable_get('comment_product', COMMENT_NODE_READ_WRITE));
+  }
+  module_invoke_all('product_class', 'subscription', 'insert');
+
+  // Make a new subscription (product) node
+  $node = new stdClass();
+  $node->uid = 1;
+  $node->type = 'subscription';
+  $node->title = 'Membership';
+  $node->body = '<ul>
+      <li><strong>Access to all of the videos in the archive</strong></li>
+      <li><strong>Add videos to your queue to remember for later</strong></li>
+      <li><strong>Watch videos from your computer, tablet, or smart phone</strong></li>
+      <li>Comment on videos & participate in the community</li>
+    </ul>';
+  $node = node_submit($node);
+  node_save($node);
+  
+  // Insert the attributes
+  db_query("INSERT INTO {uc_attributes} (name, label, ordering, required, display, description) VALUES ('%s', '%s', %d, %d, %d, '%s')", 'uc_recurring_subscription_payment_options', 'Payment Option', 0, 1, 1, 'The subscription payment options');
+  $aid = db_last_insert_id('uc_attributes', 'aid');
+  // Insert the attribute options first.
+  db_query("INSERT INTO {uc_attribute_options} (aid, oid, name, cost, price, weight, ordering) VALUES 
+    (1, 1, 'Monthly', 0.00000, 0.00000, 0, -48),
+    (1, 2, 'Daily', 0.00000, 0.00000, 0, -50),
+    (1, 3, 'Yearly', 0.00000, 0.00000, 0, -46),
+    (1, 4, 'Every  days', 0.00000, 0.00000, 0, -49),
+    (1, 5, 'Bi-annual', 0.00000, 0.00000, 0, -47)");
+  // Add the subscription product adjustments.
+  $monthly_adjustments = array(1, "1");
+  $biannual_adjustments = array(1, "5");
+  $yearly_adjustments = array(1, "3");
+  db_query("INSERT INTO {uc_product_adjustments} (nid, combination, model) VALUES (%d, '%s', '%s'), (%d, '%s', '%s'), (%d, '%s', '%s')", $node->nid, serialize($monthly_adjustments), 'monthly-' .$node->nid, $node->nid, serialize($biannual_adjustments), 'biannual-' .$node->nid, $node->nid, serialize($yearly_adjustments), 'yearly-' .$node->nid);
+
+  // Add the product options
+  db_query("INSERT INTO {uc_product_options} (nid, oid, cost, price, weight, ordering) VALUES (%d, 1, 0.00000, 0.00000, 0, -48), (%d, 3, 0.00000, 0.00000, 0, -50), (%d, 5, 0.00000, 0.00000, 0, -49)", $node->nid, $node->nid, $node->nid);
+
+  // TODO add uc_product_features
+  // TODO then add uc_atctweaks_products with id from ^
+  
+  // From http://jamestombs.co.uk/2010-10-27/programmatically-create-ubercart-products-with-attributes-and-selected-options-in-drupal-6/1314
+  $attributes = array(
+    1 => array(
+      1 => 'Monthly',
+      3 => 'Yearly',
+      5 => 'Bi-annual',
+      2 => 'Daily',
+      4 => 'Every days',
+    )
+  );
+  foreach ($attributes as $aid => $options) {
+    // Load the attribute
+    $attribute = uc_attribute_load($aid);
+    // Set the default to be the first option.
+    $oid = $attributes[$aid][0];
+    // Add the attribute for the node and set the default option
+    db_query("INSERT INTO {uc_product_attributes} (nid, aid, label, ordering, default_option, required, display) SELECT %d, aid, label, ordering, %d, required, display FROM {uc_attributes} WHERE aid = %d", $node->nid, 1, $aid);
+    // Set the options if they are provided.
+    if (is_array($attribute->options) && count($attributes[$aid]) > 0) {
+      // Cycle through all the available options (the $option object here contains all the necessary values to be put in the database.)
+      foreach ($attribute->options as $option) {
+        if (in_array($option->oid, $attributes[$aid])) { // Check to see if the current option is in our keyed array.
+          db_query("INSERT INTO {uc_product_options} (nid, oid, cost, price, weight, ordering) VALUES (%d, %d, %f, %f, %f, %d)", $node->nid, $option->oid, $option->cost, $option->price, $option->weight, $option->ordering);
+        }
+      }
+    }
+  }
+
+  // TODO add role addition and subtraction on purchase, and other conditional actions.
+  $subscription_access = serialize(
+    array(
+      'subscribe_grant' => array('3' => 3),
+      'expire_grant' => array(),
+      'expire_revoke' => array('3' => 3),
+    )
+  );
+  db_query("INSERT INTO {uc_recurring_subscription} (nid, access, ca, weight, parent) VALUES (%d, '%s', '%s', %d, '%s');", $node->nid, $subscription_access, NULL, 0, NULL); 
+
+}
