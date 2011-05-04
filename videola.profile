@@ -13,7 +13,7 @@
  * you've got yourself an install profile!
  */
 
-  !function_exists('profiler_v2') ? require_once('sites/all/libraries/profiler/profiler/profiler.inc') : FALSE;
+  !function_exists('profiler_v2') ? require_once('profiles/videola/libraries/profiler/profiler.inc') : FALSE;
   profiler_v2('videola');
 
 /**
@@ -51,7 +51,7 @@ function videola_profile_tasks(&$task, $url) {
   }
 
   // Let profiler module do it's thing.
-  include_once('sites/all/libraries/profiler/profiler/profiler_api.inc');
+  include_once('profiles/videola/libraries/profiler/profiler_api.inc');
   return profiler_profile_tasks(profiler_v2_load_config('videola'), $task, $url);
 
 }
