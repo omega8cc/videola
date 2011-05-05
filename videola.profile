@@ -41,7 +41,7 @@ function videola_profile_tasks(&$task, $url) {
   }
 
   // Setup directory and .htaccess file for private_download module.
-  $filename = file_directory_path() .'/'. $form_state['values']['private_download_directory'] .'/.htaccess';
+  $filename = file_directory_path() .'/private/.htaccess';
   // Grab the system settings form for the private download module and use the
   // default .htaccess file contents from there.
   $form = private_download_admin_form();
