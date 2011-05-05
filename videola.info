@@ -118,6 +118,7 @@ dependencies[] = jquery_update
 dependencies[] = vertical_tabs
 dependencies[] = better_formats
 dependencies[] = bueditor
+dependencies[] = viewscarousel
 
 ; Other
 dependencies[] = admin_menu
