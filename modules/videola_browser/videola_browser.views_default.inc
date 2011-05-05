@@ -969,14 +969,14 @@ function videola_browser_views_default_views() {
     'title' => 'Videos by date',
     'description' => '',
     'weight' => '0',
-    'name' => 'navigation',
+    'name' => 'primary-links',
   ));
   $handler->override_option('tab_options', array(
     'type' => 'normal',
     'title' => 'All videos',
     'description' => '',
     'weight' => '0',
-    'name' => 'navigation',
+    'name' => 'primary-links',
   ));
   $handler = $view->new_display('page', 'Videos by topic (tab)', 'page_2');
   $handler->override_option('fields', array(
@@ -1194,14 +1194,14 @@ function videola_browser_views_default_views() {
     'title' => 'Videos by topic',
     'description' => '',
     'weight' => '10',
-    'name' => 'navigation',
+    'name' => 'primary-links',
   ));
   $handler->override_option('tab_options', array(
     'type' => 'none',
     'title' => '',
     'description' => '',
     'weight' => 0,
-    'name' => 'navigation',
+    'name' => 'primary-links',
   ));
   $handler = $view->new_display('feed', 'RSS: Videos By Date', 'feed_1');
   $handler->override_option('style_plugin', 'rss');
@@ -1680,14 +1680,14 @@ function videola_browser_views_default_views() {
     'title' => '',
     'description' => '',
     'weight' => 0,
-    'name' => 'navigation',
+    'name' => 'primary-links',
   ));
   $handler->override_option('tab_options', array(
     'type' => 'none',
     'title' => '',
     'description' => '',
     'weight' => 0,
-    'name' => 'navigation',
+    'name' => 'primary-links',
   ));
   $handler = $view->new_display('feed', 'Feed', 'feed_1');
   $handler->override_option('sorts', array(
