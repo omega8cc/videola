@@ -13,8 +13,25 @@ function videola_browser_install() {
 function videola_browser_update_6000() {
   $ret = array();
 
-  // Add terms to Categories
-  $vid = db_result(db_query("SELECT vid FROM {vocabulary} WHERE name = '%s'", 'Categories'));
+  // Create vocab
+  $vocabulary = array(
+    'name' => t('Categories'),
+    'machine_name' => 'categories',
+    'description' => t('Categories for Videos'),
+    'hierarchy' => 1,
+    'module' => 'videola_browser', // or nothing
+    'weight' => 1,
+    'nodes' => array(
+      'videola_video' => 'videola_video',
+   );
+   // argument must be an object
+   $vocabulary = (object) $vocabulary;
+   taxonomy_vocabulary_save($vocabulary);
+   // horray, we have a vid now
+   $vid = $vocabulary->vid;
+
+
+  // Add terms to Categories vocab
   $categories[] = 'Term 1';
   $categories[] = 'Term 2';
   $categories[] = 'Term 3';   
