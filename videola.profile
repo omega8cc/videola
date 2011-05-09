@@ -97,7 +97,7 @@ function videola_profile_form(&$form_state, $url) {
   );
   $form['pricing_options']['monthly_price'] = array(
     '#type' => 'textfield',
-    '#title' => st('Montly subscription cost'),
+    '#title' => st('Monthly subscription cost'),
     '#description' => st('Price of a monthly subscription. Billed once per month.'),
     '#field_prefix' => st('$'),
     '#size' => 5,
