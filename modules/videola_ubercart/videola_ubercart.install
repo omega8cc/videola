@@ -79,12 +79,21 @@ function videola_ubercart_install() {
     }
   }
 
-  // TODO add role addition and subtraction on purchase, and other conditional actions.
+  // Create a new 'subscriber' role and give it the 'view archive videos', and
+  // a couple of other permisisons.
+  $rid = db_result(db_query('SELECT rid FORM {role} WHERE name = "subscriber"'));
+  if ($rid === FALSE) {
+    db_query('INSERT INTO {role} (name) VALUES ("subscriber")');
+    $rid = db_last_insert_id('role', 'rid');
+  }
+
+  db_query('INSERT INTO {permission} (rid, perm) VALUES (%d, "view own orders, view own recurring fees, view archive videos")', $rid);
+
   $subscription_access = serialize(
     array(
-      'subscribe_grant' => array('3' => 3),
+      'subscribe_grant' => array($rid => $rid),
       'expire_grant' => array(),
-      'expire_revoke' => array('3' => 3),
+      'expire_revoke' => array($rid => $rid),
     )
   );
   db_query("INSERT INTO {uc_recurring_subscription} (nid, access, ca, weight, parent) VALUES (%d, '%s', '%s', %d, '%s');", $node->nid, $subscription_access, NULL, 0, NULL); 
