@@ -13,85 +13,190 @@ api = 2
 ;libraries[profiler][destination] = "libraries/profiler"
 
 ; Here come the modules
-projects[] = install_profile_api
+; Contrib Modules
+projects[admin_menu][subdir] = "contrib"
+projects[admin_menu][version] = "1.6"
 
-; CCK
-projects[] = cck
-projects[] = filefield
-projects[] = imagefield
+projects[adminrole][subdir] = "contrib"
+projects[adminrole][version] = "1.3"
 
-; Earl
-projects[] = ctools
-projects[] = views
-;projects[] = panels
+projects[advanced_help][subdir] = "contrib"
+projects[advanced_help][version] = "1.2"
 
-; Images
-projects[] = imageapi
-projects[] = imagecache
+projects[better_formats][subdir] = "contrib"
+projects[better_formats][version] = "1.2"
 
-; Pretty
-projects[] = jquery_ui
-projects[] = jquery_update
-projects[] = vertical_tabs
+projects[boxes][subdir] = "contrib"
+projects[boxes][version] = "1.0"
 
-; Ubercart
-;projects[] = ubercart
-projects[] = uc_atctweaks
-projects[] = uc_coupon
-projects[] = uc_free_order
-projects[] = uc_termsofservice
-projects[] = uc_recurring
+projects[bueditor][subdir] = "contrib"
+projects[bueditor][version] = "2.2"
 
-; Views
-projects[] = draggableviews
-projects[] = semanticviews
-projects[] = similarterms
-projects[] = views_bulk_operations
-projects[] = views_calc
-projects[] = views_cycle
-;projects[] = views_export
+projects[ctools][subdir] = "contrib"
+projects[ctools][version] = "1.8"
 
-; Other
-projects[] = admin_menu
-projects[] = adminrole
-projects[] = advanced_help
-projects[] = amazon_s3
-projects[] = better_formats
-projects[] = boxes
-projects[] = bueditor
-projects[] = comment_notify
-projects[] = commentmail
-projects[] = context
-projects[] = date
-projects[] = devel
-projects[] = diff
-projects[] = features
-projects[flag] = 2.0-beta5
-projects[] = flag_weights
-projects[] = globalredirect
-projects[] = jcarousel
-projects[] = libraries
-projects[] = login_destination
-projects[] = logintoboggan
-projects[] = mass_contact
-projects[] = pathauto
-projects[] = private_download
-projects[] = ed_readmore
-projects[] = radioactivity
-projects[] = role_watchdog
-projects[] = securepages
-projects[] = session_limit
-projects[] = statistics_advanced
-projects[] = stringoverrides
-projects[] = strongarm
-projects[] = term_node_count
-projects[] = token
+projects[ubercart][subdir] = "contrib"
+projects[ubercart][version] = "2.4"
+
+projects[comment_notify][subdir] = "contrib"
+projects[comment_notify][version] = "1.5"
+
+projects[commentmail][subdir] = "contrib"
+projects[commentmail][version] = "1.0-beta1"
+
+projects[cck][subdir] = "contrib"
+projects[cck][version] = "2.9"
+
+projects[context][subdir] = "contrib"
+projects[context][version] = "3.0"
+
+projects[date][subdir] = "contrib"
+projects[date][version] = "2.7"
+
+projects[devel][subdir] = "contrib"
+projects[devel][version] = "1.23"
+
+projects[diff][subdir] = "contrib"
+projects[diff][version] = "2.1"
+
+projects[draggableviews][subdir] = "contrib"
+projects[draggableviews][version] = "3.5"
+
+projects[ed_readmore][subdir] = "contrib"
+projects[ed_readmore][version] = "5.0-rc7"
+
+projects[features][subdir] = "contrib"
+projects[features][version] = "1.0"
+
+projects[filefield][subdir] = "contrib"
+projects[filefield][version] = "3.10"
+
+projects[flag][subdir] = "contrib"
+projects[flag][version] = "2.0-beta5"
+
+projects[flag_weights][subdir] = "contrib"
+projects[flag_weights][version] = "1.1"
+
+projects[globalredirect][subdir] = "contrib"
+projects[globalredirect][version] = "1.3-alpha1"
+
+projects[imageapi][subdir] = "contrib"
+projects[imageapi][version] = "1.9"
+
+projects[imagecache][subdir] = "contrib"
+projects[imagecache][version] = "2.0-beta10"
+
+projects[imagefield][subdir] = "contrib"
+projects[imagefield][version] = "3.10"
+
+projects[install_profile_api][subdir] = "contrib"
+projects[install_profile_api][version] = "2.1"
+
+projects[jcarousel][subdir] = "contrib"
+projects[jcarousel][version] = "2.4"
+
+projects[jquery_ui][subdir] = "contrib"
+projects[jquery_ui][version] = "1.4"
+
+projects[jquery_update][subdir] = "contrib"
+projects[jquery_update][version] = "2.0-alpha1"
+
+projects[libraries][subdir] = "contrib"
+projects[libraries][version] = "1.0"
+
+projects[login_destination][subdir] = "contrib"
+projects[login_destination][version] = "2.12"
+
+projects[logintoboggan][subdir] = "contrib"
+projects[logintoboggan][version] = "1.9"
+
+projects[mass_contact][subdir] = "contrib"
+projects[mass_contact][version] = "1.1"
+
+projects[pathauto][subdir] = "contrib"
+projects[pathauto][version] = "1.5"
+
+projects[private_download][subdir] = "contrib"
+projects[private_download][version] = "1.3"
+
+projects[radioactivity][subdir] = "contrib"
+projects[radioactivity][version] = "1.3"
+
+projects[role_watchdog][subdir] = "contrib"
+projects[role_watchdog][version] = "1.2"
+
+projects[securepages][subdir] = "contrib"
+projects[securepages][version] = "1.9"
+
+projects[semanticviews][subdir] = "contrib"
+projects[semanticviews][version] = "1.1"
+
+projects[session_limit][subdir] = "contrib"
+projects[session_limit][version] = "2.1"
+
+projects[similarterms][subdir] = "contrib"
+projects[similarterms][version] = "2.2"
+
+projects[simpletest][subdir] = "contrib"
+projects[simpletest][version] = "2.10"
+
+projects[statistics_advanced][subdir] = "contrib"
+projects[statistics_advanced][version] = "1.5"
+
+projects[stringoverrides][subdir] = "contrib"
+projects[stringoverrides][version] = "1.8"
+
+projects[strongarm][subdir] = "contrib"
+projects[strongarm][version] = "2.0"
+
+projects[term_node_count][subdir] = "contrib"
+projects[term_node_count][version] = "1.3"
+
+projects[token][subdir] = "contrib"
+projects[token][version] = "1.15"
+
+projects[uc_atctweaks][subdir] = "contrib"
+projects[uc_atctweaks][version] = "1.0-rc1"
+
+projects[uc_coupon][subdir] = "contrib"
+projects[uc_coupon][version] = "1.5"
+
+projects[uc_free_order][subdir] = "contrib"
+projects[uc_free_order][version] = "1.0-beta4"
+
+projects[uc_recurring][subdir] = "contrib"
+projects[uc_recurring][version] = "2.0-alpha6"
+
+projects[uc_termsofservice][subdir] = "contrib"
+projects[uc_termsofservice][version] = "1.2"
+
+projects[vertical_tabs][subdir] = "contrib"
+projects[vertical_tabs][version] = "1.0-rc1"
+
+projects[views][subdir] = "contrib"
+projects[views][version] = "2.12"
+
+projects[views_bulk_operations][subdir] = "contrib"
+projects[views_bulk_operations][version] = "1.10"
+
+projects[views_calc][subdir] = "contrib"
+projects[views_calc][version] = "1.3"
+
+projects[views_cycle][subdir] = "contrib"
+projects[views_cycle][version] = "1.0"
+
+; Themes
+projects[omega][subdir] = "contrib"
+projects[omega][version] = "1.0"
 
 ; Sandbox Projects
 projects[chaptermarkers][type] = module
+projects[chaptermarkers][subdir] = "contrib"
 projects[chaptermarkers][download][type] = git
 projects[chaptermarkers][download][url] = http://git.drupal.org/sandbox/eojthebrave/1131026.git
+
 projects[ejectorseat][type] = module
+projects[ejectorseat][subir] = "contrib"
 projects[ejectorseat][download][type] = git
 projects[ejectorseat][download][url] = git://github.com/Lullabot/ejectorseat.git
 
@@ -100,10 +205,7 @@ projects[ejectorseat][download][url] = git://github.com/Lullabot/ejectorseat.git
 libraries[jquery_ui][download][type] = "get"
 libraries[jquery_ui][download][url] = "http://jquery-ui.googlecode.com/files/jquery.ui-1.6.zip"
 libraries[jquery_ui][directory_name] = "jquery.ui"
-libraries[jquery_ui][destination] = "modules/jquery_ui"
-
-; Themes
-projects[] = omega
+libraries[jquery_ui][destination] = "modules/contrib/jquery_ui"
 
 ; Patches
 projects[ubercart][patch][] = 'http://drupal.org/files/issues/ubercart_api.patch'
