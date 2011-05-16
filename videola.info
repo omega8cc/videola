@@ -118,13 +118,12 @@ dependencies[] = jquery_update
 dependencies[] = vertical_tabs
 dependencies[] = better_formats
 dependencies[] = bueditor
-dependencies[] = viewscarousel
+
 
 ; Other
 dependencies[] = admin_menu
 dependencies[] = adminrole
 dependencies[] = advanced_help
-dependencies[] = amazon_s3
 dependencies[] = boxes
 dependencies[] = comment_notify
 dependencies[] = commentmail
