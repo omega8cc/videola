@@ -443,26 +443,6 @@ function profiler_install_nodes($nodes, $config, &$identifiers) {
       }
     }
 
-    // Detect any taxonomy and handle those
-    $taxonomy = array();
-    foreach ($properties['taxonomy'] as $vocab => $terms) {
-      if (is_string($vocab)) {
-        $vocab = trim($vocab);
-        $vid = db_result(db_query("SELECT vid FROM {vocabulary} WHERE name='%s'", $vocab));
-        if ($vid != NULL && is_string($terms)) { 
-          $terms = explode(',', $terms); 
-          foreach($terms as $term) {
-            $term = trim($term);
-            $tid = db_result(db_query("SELECT tid FROM {term_data} WHERE vid=%d AND name='%s'", $vid, $term));
-            if($tid != NULL) {
-              $taxonomy[$vid][$tid] = $tid;
-            }
-          }
-        }
-      }
-    }
-    $node->taxonomy = $taxonomy;
-
     node_save($node);
   }
 }
