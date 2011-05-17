@@ -29,6 +29,21 @@ function videola_video_imagecache_default_presets() {
         ),
       ),
     ),
+    'videola_video_still_thumb' => array(
+      'presetname' => 'videola_video_still_thumb',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale',
+          'data' => array(
+            'width' => '210',
+            'height' => '',
+            'upscale' => 0,
+          ),
+        ),
+      ),
+    ),
   );
   return $items;
 }
