@@ -286,7 +286,6 @@ function _videola_core_seconds_to_hhmmss($seconds) {
       $seconds %= $value;
     }
   }
-  dsm($totals);
   return $totals;
 }
 
