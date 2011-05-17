@@ -443,25 +443,24 @@ function profiler_install_nodes($nodes, $config, &$identifiers) {
       }
     }
 
-    // Detect any taxonomy and handle those
-    $taxonomy = array();
-    foreach ($properties['taxonomy'] as $vocab => $terms) {
-      if (is_string($vocab)) {
-        $vocab = trim($vocab);
-        $vid = db_result(db_query("SELECT vid FROM {vocabulary} WHERE name='%s'", $vocab));
-        if ($vid != NULL && is_string($terms)) { 
-          $terms = explode(',', $terms); 
+    // Detect any taxonomy and handle those.
+    if (module_exists('taxonomy') && isset($properties['taxonomy'])) {
+      $taxonomy = array();
+      $vocabs_by_module = profiler_get_vocabs_by_module();
+      foreach ($properties['taxonomy'] as $vocab_module => $terms) {
+        $vid = key($vocabs_by_module[$vocab_module]);
+        if ($vid != NULL) {
+          $terms = explode(',', $terms);
           foreach($terms as $term) {
-            $term = trim($term);
-            $tid = db_result(db_query("SELECT tid FROM {term_data} WHERE vid=%d AND name='%s'", $vid, $term));
+            $tid = db_result(db_query("SELECT tid FROM {term_data} WHERE vid=%d AND name='%s'", $vid, trim($term)));
             if($tid != NULL) {
               $taxonomy[$vid][$tid] = $tid;
             }
           }
         }
       }
+      $node->taxonomy = $taxonomy;
     }
-    $node->taxonomy = $taxonomy;
 
     node_save($node);
   }
@@ -471,13 +470,8 @@ function profiler_install_nodes($nodes, $config, &$identifiers) {
  * Component install callback for 'terms'.
  */
 function profiler_install_terms($terms, $config, &$identifiers) {
-  static $vocabs, $vocabs_by_module;
-  if (!isset($vocabs)) {
-    $vocabs = taxonomy_get_vocabularies();
-    foreach ($vocabs as $vid => $vocab) {
-      $vocabs_by_module[$vocab->module][$vid] = $vocab;
-    }
-  }
+  $vocabs = profiler_get_vocabs();
+  $vocabs_by_module = profiler_get_vocabs_by_module();
   $weight = 0;
   foreach ($terms as $term) {
     // Support the 'vocab_module' key for referring to a term's vocabulary by
@@ -491,6 +485,31 @@ function profiler_install_terms($terms, $config, &$identifiers) {
       taxonomy_save_term($term);
     }
   }
+}
+
+/**
+ * Get an array of defined vocabularies.
+ */
+function profiler_get_vocabs() {
+  static $vocabs;
+  if (!isset($vocabs)) {
+    $vocabs = taxonomy_get_vocabularies();
+  }
+  return $vocabs;
+}
+
+/**
+ * Get an array of defined vocabularies indexed by {vocabulary}.module.
+ */
+function profiler_get_vocabs_by_module() {
+  static $vocabs_by_module;
+  if (!isset($vocabs_by_module)) {
+    $vocabs = taxonomy_get_vocabularies();
+    foreach ($vocabs as $vid => $vocab) {
+      $vocabs_by_module[$vocab->module][$vid] = $vocab;
+    }
+  }
+  return $vocabs_by_module;
 }
 
 /**
