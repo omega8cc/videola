@@ -286,6 +286,7 @@ function _videola_core_seconds_to_hhmmss($seconds) {
       $seconds %= $value;
     }
   }
+  dsm($totals);
   return $totals;
 }
 
@@ -360,8 +361,11 @@ function theme_videola_core_formatter_videola_duration($element) {
   if (isset($hhmmss['hours'])) {
     $output = check_plain($hhmmss['hours']) . 'h:' . check_plain($hhmmss['mins']) . 'm';
   }
+  else if (isset($hhmmss['mins'])) {
+    $output = check_plain($hhmmss['mins']) . 'm:' . check_plain($hhmmss['secs']) . 's';
+  }
   else {
-    $output = check_plain($hhmmss['mins']) . 'm';
+    $output = check_plain($hhmmss['secs']) . 's';
   }
   return $output;
 }
