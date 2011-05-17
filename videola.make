@@ -14,8 +14,7 @@ api = 2
 
 ; Here come the modules
 ; Contrib Modules
-projects[admin_menu][subdir] = "contrib"
-projects[admin_menu][version] = "1.6"
+projects[admin][subdir] = "contrib"
 
 projects[adminrole][subdir] = "contrib"
 projects[adminrole][version] = "1.3"

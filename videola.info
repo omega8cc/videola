@@ -121,7 +121,7 @@ dependencies[] = bueditor
 
 
 ; Other
-dependencies[] = admin_menu
+dependencies[] = admin
 dependencies[] = adminrole
 dependencies[] = advanced_help
 dependencies[] = boxes
