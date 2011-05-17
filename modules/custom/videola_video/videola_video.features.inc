@@ -11,44 +11,6 @@ function videola_video_ctools_plugin_api() {
 }
 
 /**
- * Implementation of hook_imagecache_default_presets().
- */
-function videola_video_imagecache_default_presets() {
-  $items = array(
-    'videola_video_still' => array(
-      'presetname' => 'videola_video_still',
-      'actions' => array(
-        '0' => array(
-          'weight' => '0',
-          'module' => 'imagecache',
-          'action' => 'imagecache_scale_and_crop',
-          'data' => array(
-            'width' => '854',
-            'height' => '480',
-          ),
-        ),
-      ),
-    ),
-    'videola_video_still_thumb' => array(
-      'presetname' => 'videola_video_still_thumb',
-      'actions' => array(
-        '0' => array(
-          'weight' => '0',
-          'module' => 'imagecache',
-          'action' => 'imagecache_scale',
-          'data' => array(
-            'width' => '210',
-            'height' => '',
-            'upscale' => 0,
-          ),
-        ),
-      ),
-    ),
-  );
-  return $items;
-}
-
-/**
  * Implementation of hook_node_info().
  */
 function videola_video_node_info() {
