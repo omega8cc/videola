@@ -9,14 +9,15 @@ function videola_browser_install() {
   videola_browser_update_6000();
 }
 
-
+/**
+ * Create 'Catgories' vocabulary.
+ */
 function videola_browser_update_6000() {
   $ret = array();
 
-  // Create vocab
+  // Create vocab.
   $vocabulary = array(
     'name' => t('Categories'),
-    'machine_name' => 'categories',
     'description' => t('Categories for Videos'),
     'hierarchy' => 1,
     'module' => 'videola_browser', // or nothing
@@ -24,26 +25,8 @@ function videola_browser_update_6000() {
     'nodes' => array(
       'videola_video' => 'videola_video',
     ),
-   );
-   // argument must be an object
-   taxonomy_save_vocabulary($vocabulary);
-   // horray, we have a vid now
-   $vid = $vocabulary->vid;
-
-
-  // Add terms to Categories vocab
-  $categories[] = 'Term 1';
-  $categories[] = 'Term 2';
-  $categories[] = 'Term 3';   
-  foreach ($categories as $k=>$v) {
-    $term = array();
-    $term['vid'] = $vid;
-    $term['name'] = $v;
-    $term['description'] = "";
-    $term['weight'] = 0;
-    taxonomy_save_term($term);
-  }
-  drupal_set_message("Terms for Categories have been created.");
+  );
+  taxonomy_save_vocabulary($vocabulary);
 
   return $ret;
 }
