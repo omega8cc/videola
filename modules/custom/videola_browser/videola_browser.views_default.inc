@@ -732,7 +732,7 @@ function videola_browser_views_default_views() {
       'empty_zero' => 0,
       'link_to_node' => 0,
       'label_type' => 'none',
-      'format' => '4_column_16-9_linked',
+      'format' => 'videola_video_still_thumb_linked',
       'multiple' => array(
         'group' => TRUE,
         'multiple_number' => '',
