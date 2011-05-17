@@ -84,7 +84,9 @@ dependencies[] = jcarousel
 
 ; Images
 dependencies[] = imageapi
+dependencies[] = imageapi_gd
 dependencies[] = imagecache
+dependencies[] = imagecache_ui
 
 ; Ubercart
 dependencies[] = uc_cart
