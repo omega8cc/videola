@@ -231,6 +231,7 @@ nodes[first][field_videola_video][1][filepath] = profiles/videola/example_files/
 nodes[first][field_videola_video][1][destination] = private/videola_videos
 nodes[first][field_videola_video_still][1][filepath] = profiles/videola/example_files/screen-1.png
 nodes[first][field_videola_video_still][1][destination] = videola_video_stills
+nodes[first][field_videola_video_length][][value] = 30
 
 nodes[second][type] = videola_video
 nodes[second][title] = Second Video
@@ -241,6 +242,7 @@ nodes[second][field_videola_video][1][filepath] = profiles/videola/example_files
 nodes[second][field_videola_video][1][destination] = private/videola_videos
 nodes[second][field_videola_video_still][1][filepath] = profiles/videola/example_files/screen-2.png
 nodes[second][field_videola_video_still][1][destination] = videola_video_stills
+nodes[second][field_videola_video_length][][value] = 30
 
 nodes[third][type] = videola_video
 nodes[third][title] = Third Video
@@ -251,3 +253,4 @@ nodes[third][field_videola_video][1][filepath] = profiles/videola/example_files/
 nodes[third][field_videola_video][1][destination] = private/videola_videos
 nodes[third][field_videola_video_still][1][filepath] = profiles/videola/example_files/screen-3.png
 nodes[third][field_videola_video_still][1][destination] = videola_video_stills
+nodes[third][field_videola_video_length][][value] = 30
