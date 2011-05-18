@@ -641,7 +641,7 @@ function videola_browser_views_default_views() {
   $handler->override_option('cache', array(
     'type' => 'none',
   ));
-  $handler->override_option('title', 'Drupal Videos By Date');
+  $handler->override_option('title', 'Videos By Date');
   $handler->override_option('items_per_page', 24);
   $handler->override_option('use_pager', '1');
   $handler->override_option('use_more', 1);
@@ -1148,7 +1148,7 @@ function videola_browser_views_default_views() {
       'relationship' => 'none',
     ),
   ));
-  $handler->override_option('title', 'Drupal Videos By Topic');
+  $handler->override_option('title', 'Videos By Topic');
   $handler->override_option('css_class', 'view-videos-by-topic');
   $handler->override_option('items_per_page', 0);
   $handler->override_option('distinct', 1);
