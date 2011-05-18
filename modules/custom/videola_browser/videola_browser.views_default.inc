@@ -639,9 +639,7 @@ function videola_browser_views_default_views() {
     'type' => 'none',
   ));
   $handler->override_option('cache', array(
-    'type' => 'time',
-    'results_lifespan' => '1800',
-    'output_lifespan' => '1800',
+    'type' => 'none',
   ));
   $handler->override_option('title', 'Drupal Videos By Date');
   $handler->override_option('items_per_page', 24);
