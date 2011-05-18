@@ -62,7 +62,7 @@ function videola_browser_views_default_views() {
       'alter' => array(
         'alter_text' => 0,
         'text' => '[name] <span class="count">[node_count]</span>',
-        'make_link' => 1,
+        'make_link' => 0,
         'path' => 'videos/[name]',
         'link_class' => '',
         'alt' => '',
@@ -137,35 +137,15 @@ function videola_browser_views_default_views() {
   $handler->override_option('header_format', '1');
   $handler->override_option('header_empty', 0);
   $handler->override_option('items_per_page', 100);
-  $handler->override_option('style_plugin', 'semanticviews_default');
+  $handler->override_option('style_plugin', 'list');
   $handler->override_option('style_options', array(
     'grouping' => '',
-    'group' => array(
-      'element_type' => 'h3',
-      'class' => 'title',
-    ),
-    'list' => array(
-      'element_type' => 'ul',
-      'class' => 'clearfix',
-    ),
-    'row' => array(
-      'element_type' => 'li',
-      'class' => '',
-      'last_every_nth' => '0',
-      'first_class' => 'first',
-      'last_class' => 'last',
-      'striping_classes' => 'odd even',
-    ),
+    'type' => 'ul',
   ));
-  $handler->override_option('row_plugin', 'semanticviews_fields');
   $handler->override_option('row_options', array(
-    'semantic_html' => array(
-      'name' => array(
-        'element_type' => 'div',
-        'class' => '',
-      ),
-    ),
-    'skip_blank' => 0,
+    'inline' => array(),
+    'separator' => '',
+    'hide_empty' => 0,
   ));
   $handler = $view->new_display('block', 'By Category & Topic', 'block_1');
   $handler->override_option('arguments', array(
@@ -237,79 +217,16 @@ function videola_browser_views_default_views() {
       'validate_argument_php' => '',
     ),
   ));
-  $handler->override_option('filters', array());
+  $handler->override_option('filters', array(
+    'vid' => array(
+      'id' => 'vid',
+      'table' => 'term_data',
+      'field' => 'vid',
+    ),
+  ));
   $handler->override_option('title', 'Browse By Category & Topic');
   $handler->override_option('block_description', '');
   $handler->override_option('block_caching', -1);
-  $handler = $view->new_display('attachment', 'Attachment', 'attachment_1');
-  $handler->override_option('arguments', array(
-    'parent' => array(
-      'default_action' => 'default',
-      'style_plugin' => 'default_summary',
-      'style_options' => array(),
-      'wildcard' => 'all',
-      'wildcard_substitution' => 'All',
-      'title' => '',
-      'breadcrumb' => '',
-      'default_argument_type' => 'fixed',
-      'default_argument' => '',
-      'validate_type' => 'none',
-      'validate_fail' => 'not found',
-      'break_phrase' => 0,
-      'not' => 0,
-      'id' => 'parent',
-      'table' => 'term_hierarchy',
-      'field' => 'parent',
-      'validate_user_argument_type' => 'uid',
-      'validate_user_roles' => array(
-        '2' => 0,
-        '4' => 0,
-        '3' => 0,
-      ),
-      'override' => array(
-        'button' => 'Use default',
-      ),
-      'relationship' => 'none',
-      'default_options_div_prefix' => '',
-      'default_argument_fixed' => '2',
-      'default_argument_user' => 0,
-      'default_argument_php' => '',
-      'validate_argument_node_type' => array(
-        'blog' => 0,
-        'presenter' => 0,
-        'playlist_video' => 0,
-        'standalone_video' => 0,
-        'product' => 0,
-        'page' => 0,
-      ),
-      'validate_argument_node_access' => 0,
-      'validate_argument_nid_type' => 'nid',
-      'validate_argument_vocabulary' => array(
-        '1' => 0,
-        '2' => 0,
-      ),
-      'validate_argument_type' => 'tid',
-      'validate_argument_transform' => 0,
-      'validate_user_restrict_roles' => 0,
-      'validate_argument_node_flag_name' => '*relationship*',
-      'validate_argument_node_flag_test' => 'flaggable',
-      'validate_argument_node_flag_id_type' => 'id',
-      'validate_argument_user_flag_name' => '*relationship*',
-      'validate_argument_user_flag_test' => 'flaggable',
-      'validate_argument_user_flag_id_type' => 'id',
-      'validate_argument_php' => '',
-    ),
-  ));
-  $handler->override_option('title', 'Presentation Videos');
-  $handler->override_option('attachment_position', 'before');
-  $handler->override_option('inherit_arguments', TRUE);
-  $handler->override_option('inherit_exposed_filters', FALSE);
-  $handler->override_option('inherit_pager', FALSE);
-  $handler->override_option('render_pager', TRUE);
-  $handler->override_option('displays', array(
-    'default' => 0,
-    'block_1' => 0,
-  ));
 
   $views[$view->name] = $view;
 
@@ -1433,7 +1350,7 @@ function videola_browser_views_default_views() {
       'empty_zero' => 0,
       'link_to_node' => 0,
       'label_type' => 'none',
-      'format' => '4_column_16-9_linked',
+      'format' => 'videola_video_still_thumb_linked',
       'multiple' => array(
         'group' => TRUE,
         'multiple_number' => '',
@@ -1445,6 +1362,9 @@ function videola_browser_views_default_views() {
       'table' => 'node_data_field_videola_video_still',
       'field' => 'field_videola_video_still_fid',
       'relationship' => 'none',
+      'override' => array(
+        'button' => 'Override',
+      ),
     ),
     'field_videola_video_length_value' => array(
       'label' => '',
@@ -1650,21 +1570,15 @@ function videola_browser_views_default_views() {
     'type' => 'none',
   ));
   $handler->override_option('cache', array(
-    'type' => 'time',
-    'results_lifespan' => '1800',
-    'output_lifespan' => '1800',
+    'type' => 'none',
   ));
   $handler->override_option('title', 'Videos');
   $handler->override_option('items_per_page', 40);
   $handler->override_option('use_pager', '1');
   $handler->override_option('use_more', 1);
   $handler->override_option('use_more_always', 0);
-  $handler->override_option('style_plugin', 'grid');
   $handler->override_option('style_options', array(
     'grouping' => '',
-    'columns' => '2',
-    'alignment' => 'horizontal',
-    'fill_single_line' => 1,
   ));
   $handler->override_option('row_options', array(
     'inline' => array(),
