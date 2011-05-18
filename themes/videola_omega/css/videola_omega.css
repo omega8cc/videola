@@ -1,0 +1,35 @@
+/**
+ * @file
+ * Videola Omega Theme CSS.
+ */
+
+/* Badges for video screens */
+.view-videola-videos .views-view-grid td span.field-content {
+	/* Allow absolute positioning of badges relative to grid element. */
+	position: relative;
+}
+
+.free-video-badge,
+.free-video-badge-small {
+  background: url(../images/video_badge_free_small.png) no-repeat top right;
+  height: 79px;
+  width: 78px;
+  position: absolute;
+  top: 0;
+  left: 132px;
+  z-index: 500;
+}
+
+.free-video-badge {
+	left: 777px;
+}
+
+.view-videola-videos-by-cat .free-video-badge-small {
+  /*margin-left: 142px;*/
+}
+
+.views-field-field-videola-ooyala-video-value .free-video-badge-small {
+	margin-top: -144px;
+	margin-left: 179px;
+	position: absolute;
+}
