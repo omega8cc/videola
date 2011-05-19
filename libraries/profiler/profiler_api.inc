@@ -353,22 +353,32 @@ function profiler_get_file($filepath) {
  *   operation fails.
  */
 function _profiler_install_file($file) {
+  $error = FALSE;
   if (!isset($file['filepath'])) {
     drupal_set_message(t('Filepath must be specified when installing files.'), 'error', FALSE);
-    return FALSE;
+    $error = TRUE;
+  }
+
+  if (!isset($file['destination'])) {
+    drupal_set_message(t('File destination musy be specified when installing files.'), 'error', FALSE);
+    $error = TRUE;
   }
 
   if (isset($file['name'])) {
     $account = user_load(array('name' => $file['name']));
     if (!$account) {
       drupal_set_message(t('Failed to load Drupal user %user -- file %filepath not saved.', array('%name' => $file['name'], '%title' => $filepath)), 'error', FALSE);
-      return FALSE;
+      $error = TRUE;;
     }
   }
 
   // Verify that the source file exists.
   if (!file_exists($file['filepath'])) {
     drupal_set_message(t('The file %filepath does not exist.', array('%filepath' => $file['filepath'])), 'error', FALSE);
+    $error = TRUE;
+  }
+
+  if ($error) {
     return FALSE;
   }
 
@@ -377,11 +387,14 @@ function _profiler_install_file($file) {
   $file['filename'] = isset($file['filename']) ? $file['filename'] : basename($file['filepath']);
   $file['filemime'] = isset($file['filemime']) ? $file['filemime'] : (module_exists('mimedetect') ? mimedetect_mime($file) : file_get_mimetype($file->filename));
   $file['source'] = isset($file['source']) ? $file['source'] : $file['filepath'];
-  $file['destination'] = file_destination(file_create_path($file['destination'] .'/'. $file['filename']), FILE_EXISTS_RENAME);
+  $file['destination'] = isset($file['destination']) ? file_create_path($file['destination']) : file_create_path();
   $file['filesize'] = isset($file['filesize']) ? $file['filesize'] : filesize($filepath);
 
   // Conver to an object, necessary for the next couple of operations.
   $file = (object) $file;
+
+  // Make sure the directory exists before trying to copy a file into it.
+  file_check_directory($file->destination, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
 
   // Copy the file to the destination directory.
   if (!file_copy($file, $file->destination, FILE_EXISTS_RENAME)) {
