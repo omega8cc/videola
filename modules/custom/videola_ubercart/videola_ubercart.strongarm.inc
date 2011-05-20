@@ -916,7 +916,7 @@ For your convenience, all of your order details have been emailed to [order-emai
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'uc_recurring_subscription_product_class';
-  $strongarm->value = 'subscription';
+  $strongarm->value = 'uc_recurring_subscription';
 
   $export['uc_recurring_subscription_product_class'] = $strongarm;
   $strongarm = new stdClass;
