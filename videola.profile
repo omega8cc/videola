@@ -94,7 +94,7 @@ function videola_profile_form(&$form_state, $url) {
   $form['pricing_options'] = array(
     '#type' => 'fieldset',
     '#title' => st('Subscription Pricing Options'),
-    '#description' => st('Videola is configured out of the box to allow users to purchase a monthly, bi-annual (6 months) or annual (1 year) subscription. Users will be automatically re-billed every 1, 6, or 12 months after their initial purchase date depending on the subscription they chose until they cancel their acount.'),
+    '#description' => st('Videola is configured out of the box to allow users to purchase a monthly, bi-annual (6 months) or annual (1 year) subscription. Users will be automatically re-billed every 1, 6, or 12 months after their initial purchase date depending on the subscription they chose until they cancel their account.'),
   );
   $form['pricing_options']['monthly_price'] = array(
     '#type' => 'textfield',
