@@ -196,6 +196,12 @@ function videola_profile_form_submit($form, &$form_state) {
     $annual_product_features->pfid, 'subscription-annual', $form_state['values']['annual_price'], '1 years', '1 years', -1
   );
 
+  // Update the path alias for the subscription node to be signup rather than content/membership.
+  $nid = db_result(db_query("SELECT nid FROM {node} WHERE type='subscription' LIMIT 1"));
+  $node = node_load($nid);
+  $node->path = 'signup';
+  node_save($node);
+
   // Flag so that videola_profile_tasks knows the form has been submitted and
   // can move on.
   variable_set('videola_profile_form', TRUE);
