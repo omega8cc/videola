@@ -85,7 +85,6 @@ function videola_profile_tasks(&$task, $url) {
       $task = 'profile-finished';
     }
   }
-
 }
 
 /**
@@ -173,6 +172,29 @@ function videola_profile_form_submit($form, &$form_state) {
         break;
     }
   }
+
+  // Update help text of the product features to replace the correct $MONTHLY_FEE, $BIANNUAL_FEE and $ANNUAL_FEE amounts.
+  $monthly_product_features = db_fetch_object(db_query("SELECT * FROM {uc_product_features} WHERE fid = 'recurring' AND description LIKE '%MONTHLY_FEE%' LIMIT 1"));
+  $new_monthly_description = str_replace('MONTHLY_FEE', '$' .$form_state['values']['monthly_price'], $monthly_product_features->description);
+  db_query("UPDATE {uc_product_features} SET description = '%s' WHERE pfid = %d", $new_monthly_description, $monthly_product_features->pfid);
+  // Bi-annual update.
+  $biannual_product_features = db_fetch_object(db_query("SELECT * FROM {uc_product_features} WHERE fid = 'recurring' AND description LIKE '%BIANNUAL_FEE%' LIMIT 1"));
+  $new_biannual_description = str_replace('BIANNUAL_FEE', '$' .$form_state['values']['bi_annual_price'], $biannual_product_features->description);
+  db_query("UPDATE {uc_product_features} SET description = '%s' WHERE pfid = %d", $new_biannual_description, $biannual_product_features->pfid);
+  // Annual update.
+  $annual_product_features = db_fetch_object(db_query("SELECT * FROM {uc_product_features} WHERE fid = 'recurring' AND description LIKE '%YEARLY_FEE%' ORDER BY pfid DESC LIMIT 1"));
+  $new_annual_description = str_replace('YEARLY_FEE', '$' .$form_state['values']['annual_price'], $annual_product_features->description);
+  db_query("UPDATE {uc_product_features} SET description = '%s' WHERE pfid = %d", $new_annual_description, $annual_product_features->pfid);
+
+  // Add uc recurring product info for monthly, bi-annual and annual products.
+  db_query("INSERT INTO {uc_recurring_product} (pfid, model, fee_amount, initial_charge, regular_interval, number_intervals) VALUES (%d, '%s', %f, '%s', '%s', %d), (%d, '%s', %f, '%s', '%s', %d), (%d, '%s', %f, '%s', '%s', %d)",
+    // monthly
+    $monthly_product_features->pfid, 'subscription-monthly', $form_state['values']['monthly_price'], '1 months', '1 months', -1,
+    // biannual
+    $biannual_product_features->pfid, 'subscription-biannual', $form_state['values']['bi_annual_price'], '6 months', '6 months', -1,
+    // annual
+    $annual_product_features->pfid, 'subscription-annual', $form_state['values']['annual_price'], '1 years', '1 years', -1
+  );
 
   // Flag so that videola_profile_tasks knows the form has been submitted and
   // can move on.

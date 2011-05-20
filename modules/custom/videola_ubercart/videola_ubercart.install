@@ -6,7 +6,17 @@
  * Random crap to get our Ubercart installation setup.
  */
 function videola_ubercart_install() {
-  // Add the subscription product class
+  // Create a new 'subscriber' role and give it the 'view archive videos', and
+  // a couple of other permisisons.
+  $rid = db_result(db_query('SELECT rid FORM {role} WHERE name = "subscriber"'));
+  if ($rid === FALSE) {
+    db_query('INSERT INTO {role} (name) VALUES ("subscriber")');
+    $rid = db_last_insert_id('role', 'rid');
+  }
+  // Add permissions for the 'subscriber' role.
+  db_query('INSERT INTO {permission} (rid, perm) VALUES (%d, "view own orders, view own recurring fees, view archive videos")', $rid);
+
+  // Add the subscription product class.
   db_query("INSERT INTO {uc_product_classes} (pcid, name, description) VALUES ('%s', '%s', '%s')", 'subscription', 'Subscription', 'A subscription for your site.');
   uc_product_node_info(TRUE);
   variable_set('node_options_subscription', variable_get('node_options_product', array('status', 'promote')));
@@ -15,7 +25,7 @@ function videola_ubercart_install() {
   }
   module_invoke_all('product_class', 'subscription', 'insert');
 
-  // Make a new subscription (product) node
+  // Make a new subscription (product) node.
   $node = new stdClass();
   $node->uid = 1;
   $node->type = 'subscription';
@@ -28,37 +38,83 @@ function videola_ubercart_install() {
     </ul>';
   $node = node_submit($node);
   node_save($node);
-  
-  // Insert the attributes
+
+  // Get an entry into uc_products for our subscription product
+  $node->model = 'subscription';
+  $node->list_price =  0.00000;
+  $node->cost = 0.00000;
+  $node->sell_price = 0.00000;
+  $node->weight = 0;
+  $node->weight_units = NULL;
+  $node->length = 0;
+  $node->width = 0;
+  $node->height = 0;
+  $node->length_units = NULL;
+  $node->pkg_qty = 1;
+  $node->default_qty = 1;
+  $node->ordering = 0;
+  $node->shippable = 0;
+  uc_product_insert($node);
+
+  // Insert the uc recurring subscription info.
+  $subscription_access = serialize(
+    array(
+      'subscribe_grant' => array($rid => $rid),
+      'expire_grant' => array(),
+      'expire_revoke' => array($rid => $rid),
+    )
+  );
+  db_query("INSERT INTO {uc_recurring_subscription} (nid, access, ca, weight, parent) VALUES (%d, '%s', '%s', %d, '%s');", $node->nid, $subscription_access, NULL, 0, NULL); 
+
+  // Insert the subscription product attributes.
   db_query("INSERT INTO {uc_attributes} (name, label, ordering, required, display, description) VALUES ('%s', '%s', %d, %d, %d, '%s')", 'uc_recurring_subscription_payment_options', 'Payment Option', 0, 1, 1, 'The subscription payment options');
   $aid = db_last_insert_id('uc_attributes', 'aid');
-  // Insert the attribute options first.
+  // Insert the attribute options. Initially the product is free, we'll change this
+  // using user submitted values from a form during the install process.
   db_query("INSERT INTO {uc_attribute_options} (aid, oid, name, cost, price, weight, ordering) VALUES 
     (1, 1, 'Monthly', 0.00000, 0.00000, 0, -48),
-    (1, 2, 'Daily', 0.00000, 0.00000, 0, -50),
     (1, 3, 'Yearly', 0.00000, 0.00000, 0, -46),
-    (1, 4, 'Every  days', 0.00000, 0.00000, 0, -49),
     (1, 5, 'Bi-annual', 0.00000, 0.00000, 0, -47)");
   // Add the subscription product adjustments.
   $monthly_adjustments = array(1, "1");
   $biannual_adjustments = array(1, "5");
   $yearly_adjustments = array(1, "3");
-  db_query("INSERT INTO {uc_product_adjustments} (nid, combination, model) VALUES (%d, '%s', '%s'), (%d, '%s', '%s'), (%d, '%s', '%s')", $node->nid, serialize($monthly_adjustments), 'monthly-' .$node->nid, $node->nid, serialize($biannual_adjustments), 'biannual-' .$node->nid, $node->nid, serialize($yearly_adjustments), 'yearly-' .$node->nid);
+  db_query("INSERT INTO {uc_product_adjustments} (nid, combination, model) VALUES (%d, '%s', '%s'), (%d, '%s', '%s'), (%d, '%s', '%s')", $node->nid, serialize($monthly_adjustments), 'subscription-monthly', $node->nid, serialize($biannual_adjustments), 'subscription-biannual', $node->nid, serialize($yearly_adjustments), 'subscription-yearly');
 
-  // Add the product options
+  // Give the product a model name (SKU).
+  $model_name = 'subscription';
+  db_query("UPDATE {uc_products} set model='%s' WHERE nid = %d", $model_name, $node->nid);
+
+  // Add the product options.
   db_query("INSERT INTO {uc_product_options} (nid, oid, cost, price, weight, ordering) VALUES (%d, 1, 0.00000, 0.00000, 0, -48), (%d, 3, 0.00000, 0.00000, 0, -50), (%d, 5, 0.00000, 0.00000, 0, -49)", $node->nid, $node->nid, $node->nid);
 
-  // TODO add uc_product_features
-  // TODO then add uc_atctweaks_products with id from ^
-  
-  // From http://jamestombs.co.uk/2010-10-27/programmatically-create-ubercart-products-with-attributes-and-selected-options-in-drupal-6/1314
+  // Insert the Add To Cart tweaks product feature.
+  db_query("INSERT INTO {uc_product_features} (nid, fid, description) VALUES (%d, 'atctweaks', '<b>Add to cart form redirect:</b> Checkout form<br />The cart will be emptied prior to adding this item to it.')", $node->nid);
+  $pfid = db_last_insert_id('uc_product_features', 'pfid');
+  db_query("INSERT INTO {uc_atctweaks_products} (pfid, cart_empty, redirect) VALUES (%d, 1, 'checkout')", $pfid);
+
+  // Insert the Role product feature.
+  db_query("INSERT INTO {uc_product_features} (nid, fid, description) VALUES (%d, 'role', '<strong>SKU:</strong> Any<br /><strong>Role:</strong> subscriber<br /><strong>Expiration:</strong> <a href=\"/admin/store/settings/products/edit/features\">Global expiration</a> (not overridden)<br /><strong>Shippable:</strong> No<br /><strong>Multiply by quantity:</strong> No')", $node->nid);
+  $pfid_role = db_last_insert_id('uc_product_feature', 'pfid');
+  db_query("INSERT INTO {uc_roles_products} (pfid, nid, model, rid, start_override, start_time, end_override, end_time, duration, granularity, shippable, by_quantity) VALUES (%d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', %d, %d)", $pfid_role, $node->nid, $model_name, $rid, 0, 0, 0, 0, 0, 'never', 0, 0);
+
+  // Recurring features we don't have actual fees at this point so leave the place holders,
+  // will be swapped out as part of the install profile.
+  db_query("INSERT INTO {uc_product_features} (nid, fid, description) VALUES (%d, 'recurring', 'When subscription-monthly of this product is purchased, add a fee for MONTHLY_FEE charged first after 1 months and every 1 months after that unlimited times.')", $node->nid);
+  $pfid_monthly = db_last_insert_id('uc_product_features', 'pfid');
+
+  db_query("INSERT INTO {uc_product_features} (nid, fid, description) VALUES (%d, 'recurring', 'When subscription-biannual of this product is purchased, add a fee for BIANNUAL_FEE charged first after 6 months and every 6 months after that unlimited times.')", $node->nid);
+  $pfid_biannual = db_last_insert_id('uc_product_features', 'pfid');
+
+  db_query("INSERT INTO {uc_product_features} (nid, fid, description) VALUES (%d, 'recurring', 'When subscription-yearly of this product is purchased, add a fee for YEARLY_FEE charged first after 1 years and every 1 years after that unlimited times.')", $node->nid);
+  $pfid_annual = db_last_insert_id('uc_product_features', 'pfid');
+
+  // Using code similar to http://lb.cm/Zv2.
   $attributes = array(
     1 => array(
       1 => 'Monthly',
       3 => 'Yearly',
       5 => 'Bi-annual',
-      2 => 'Daily',
-      4 => 'Every days',
     )
   );
   foreach ($attributes as $aid => $options) {
@@ -72,30 +128,11 @@ function videola_ubercart_install() {
     if (is_array($attribute->options) && count($attributes[$aid]) > 0) {
       // Cycle through all the available options (the $option object here contains all the necessary values to be put in the database.)
       foreach ($attribute->options as $option) {
-        if (in_array($option->oid, $attributes[$aid])) { // Check to see if the current option is in our keyed array.
+        if (in_array($option->oid, $attributes[$aid])) {
+          // Check to see if the current option is in our keyed array.
           db_query("INSERT INTO {uc_product_options} (nid, oid, cost, price, weight, ordering) VALUES (%d, %d, %f, %f, %f, %d)", $node->nid, $option->oid, $option->cost, $option->price, $option->weight, $option->ordering);
         }
       }
     }
   }
-
-  // Create a new 'subscriber' role and give it the 'view archive videos', and
-  // a couple of other permisisons.
-  $rid = db_result(db_query('SELECT rid FORM {role} WHERE name = "subscriber"'));
-  if ($rid === FALSE) {
-    db_query('INSERT INTO {role} (name) VALUES ("subscriber")');
-    $rid = db_last_insert_id('role', 'rid');
-  }
-
-  db_query('INSERT INTO {permission} (rid, perm) VALUES (%d, "view own orders, view own recurring fees, view archive videos")', $rid);
-
-  $subscription_access = serialize(
-    array(
-      'subscribe_grant' => array($rid => $rid),
-      'expire_grant' => array(),
-      'expire_revoke' => array($rid => $rid),
-    )
-  );
-  db_query("INSERT INTO {uc_recurring_subscription} (nid, access, ca, weight, parent) VALUES (%d, '%s', '%s', %d, '%s');", $node->nid, $subscription_access, NULL, 0, NULL); 
-
 }
