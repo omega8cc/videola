@@ -1044,6 +1044,39 @@ function videola_browser_views_default_views() {
         'button' => 'Use default',
       ),
     ),
+    'name' => array(
+      'label' => '',
+      'alter' => array(
+        'alter_text' => 0,
+        'text' => '',
+        'make_link' => 0,
+        'path' => '',
+        'link_class' => '',
+        'alt' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'link_to_taxonomy' => 0,
+      'exclude' => 1,
+      'id' => 'name',
+      'table' => 'term_data',
+      'field' => 'name',
+      'override' => array(
+        'button' => 'Use default',
+      ),
+      'relationship' => 'none',
+    ),
   ));
   $handler->override_option('sorts', array(
     'name' => array(
@@ -1068,36 +1101,37 @@ function videola_browser_views_default_views() {
   $handler->override_option('title', 'Videos By Topic');
   $handler->override_option('css_class', 'view-videos-by-topic');
   $handler->override_option('items_per_page', 0);
-  $handler->override_option('distinct', 1);
+  $handler->override_option('distinct', 0);
   $handler->override_option('style_plugin', 'table');
   $handler->override_option('style_options', array(
-    'grouping' => 'tid',
+    'grouping' => 'name',
     'override' => 1,
     'sticky' => 0,
     'order' => 'asc',
     'columns' => array(
-      'field_videola_free_value' => 'field_videola_free_value',
       'title' => 'title',
-      'tid' => 'tid',
       'field_videola_video_length_value' => 'field_videola_video_length_value',
-      'nothing' => 'nothing',
+      'tid' => 'tid',
+      'ops' => 'ops',
+      'name' => 'name',
     ),
     'info' => array(
-      'field_videola_free_value' => array(
+      'title' => array(
         'sortable' => 0,
         'separator' => '',
       ),
-      'title' => array(
+      'field_videola_video_length_value' => array(
         'sortable' => 0,
         'separator' => '',
       ),
       'tid' => array(
         'separator' => '',
       ),
-      'field_videola_video_length_value' => array(
+      'ops' => array(
         'separator' => '',
       ),
-      'nothing' => array(
+      'name' => array(
+        'sortable' => 0,
         'separator' => '',
       ),
     ),
