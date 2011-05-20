@@ -12,9 +12,11 @@ function videola_browser_context_default_contexts() {
   $context->description = 'the taxonomy browser block';
   $context->tag = 'videos';
   $context->conditions = array(
-    'path' => array(
+    'views' => array(
       'values' => array(
-        'videos*' => 'videos*',
+        'videola_videos:page_1' => 'videola_videos:page_1',
+        'videola_videos:page_2' => 'videola_videos:page_2',
+        'videola_videos_by_cat:page_1' => 'videola_videos_by_cat:page_1',
       ),
     ),
   );
@@ -26,12 +28,6 @@ function videola_browser_context_default_contexts() {
           'delta' => 'videola_video_topics-block_1',
           'region' => 'content_top',
           'weight' => 0,
-        ),
-        'views-videola_video_topics-block_2' => array(
-          'module' => 'views',
-          'delta' => 'videola_video_topics-block_2',
-          'region' => 'content_top',
-          'weight' => 1,
         ),
       ),
     ),
