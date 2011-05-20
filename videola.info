@@ -141,7 +141,6 @@ dependencies[] = globalredirect
 dependencies[] = libraries
 dependencies[] = login_destination
 dependencies[] = logintoboggan
-dependencies[] = mass_contact
 dependencies[] = pathauto
 dependencies[] = private_download
 dependencies[] = ed_readmore
