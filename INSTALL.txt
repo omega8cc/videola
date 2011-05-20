@@ -285,8 +285,13 @@ This feature uses Flags so that each user can keep a list of videos that they wa
 -----------------------------------------------------------------------------------------------------
 --- VIDEOLA UBERCART FEATURE
 -----------------------------------------------------------------------------------------------------
-Payment levels
-recurring
+The user signs up for the subscription at /signup.  This membership node can be configured at /node/1/edit.  
+--- Description text area.
+--- Product Information vertical tab: Configure the "Sell Price".
+
+The Payment option select list can be configured at /admin/store/attributes.  Click "options" to specify monthly/bi-annual/yearly prices.
+
+recurring config?
 
 
 -----------------------------------------------------------------------------------------------------
