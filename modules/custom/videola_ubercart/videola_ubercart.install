@@ -6,6 +6,197 @@
  * Random crap to get our Ubercart installation setup.
  */
 function videola_ubercart_install() {
+  // Setup ubercart variables.
+  variable_set('uc_add_item_redirect', 'cart');
+  variable_set('uc_address_fields', array(
+    'first_name' => 'first_name',
+    'last_name' => 'last_name',
+    'phone' => 'phone',
+    'street1' => 'street1',
+    'street2' => 'street2',
+    'city' => 'city',
+    'zone' => 'zone',
+    'country' => 'country',
+    'postal_code' => 'postal_code',
+  ));
+  variable_set('uc_address_fields_required', array(
+    'first_name' => 'first_name',
+    'last_name' => 'last_name',
+    'phone' => 'phone',
+    'street1' => 'street1',
+    'city' => 'city',
+    'zone' => 'zone',
+    'country' => 'country',
+    'postal_code' => 'postal_code',
+  ));
+  variable_set('uc_authnet_api_live_gateway_url', 'https://secure.authorize.net/gateway/transact.dll');
+  variable_set('uc_authnet_api_test_gateway_url', 'https://test.authorize.net/gateway/transact.dll');
+  variable_set('uc_authnet_arb_mode', 'production');
+  variable_set('uc_authnet_cim_mode', 'production');
+  variable_set('uc_authnet_cim_profile', 1);
+  variable_set('uc_authnet_duplicate_window', '120');
+  variable_set('uc_authnet_md5_hash', '');
+  variable_set('uc_authnet_report_arb_post', 1);
+  variable_set('uc_authnet_response_debug', 0);
+  variable_set('uc_cart_add_item_msg', 0);
+  variable_set('uc_cart_anon_duration', '4');
+  variable_set('uc_cart_anon_unit', 'hours');
+  variable_set('uc_cart_auth_duration', '1');
+  variable_set('uc_cart_auth_unit', 'years');
+  variable_set('uc_cart_breadcrumb_text', '');
+  variable_set('uc_cart_breadcrumb_url', '');
+  variable_set('uc_cart_email_validation', 0);
+  variable_set('uc_cart_new_account_details', '<b>Optional.</b> New customers may supply custom account details.<br />We will create these for you if no values are entered.');
+  variable_set('uc_cart_new_account_name', 1);
+  variable_set('uc_cart_new_account_password', 0);
+  variable_set('uc_checkout_instructions', 'You\'re almost done. Simply provide us with some information about yourself and how you wish to pay and then click the "Review Order" button at the bottom.');
+  variable_set('uc_checkout_instructions_format', '1');
+  variable_set('uc_checkout_review_instructions', 'Now let\'s double check to be sure all is well. Please review the details below and if all looks well click the "Submit Order" button. If you need to tweak something click the "Back" button. Once you click the "Submit Order" button you\'ll be all done and ready to be Drupalized!');
+  variable_set('uc_checkout_review_instructions_format', '1');
+  variable_set('uc_continue_shopping_text', '');
+  variable_set('uc_continue_shopping_type', 'link');
+  variable_set('uc_continue_shopping_url', '');
+  variable_set('uc_continue_shopping_use_last_url',  1);
+  variable_set('uc_coupon_pane_description', '');
+  variable_set('uc_credit_accepted_types', 'Visa
+Mastercard
+Discover
+American Express');
+  variable_set('uc_credit_amex', 1);
+  variable_set('uc_credit_bank_enabled', 0);
+  variable_set('uc_credit_checkout_process', 1);
+  variable_set('uc_credit_clear_status', 'completed');
+  variable_set('uc_credit_cvv_enabled', 1);
+  variable_set('uc_credit_debug', 0);
+  variable_set('uc_credit_discover', 1);
+  variable_set('uc_credit_encryption_path', '/tmp');
+  variable_set('uc_credit_fail_message', 'We were unable to process your credit card payment. Please verify your card details and try again.  If the problem persists, contact us to complete your order.');
+  variable_set('uc_credit_issue_enabled', 0);
+  variable_set('uc_credit_mastercard', 1);
+  variable_set('uc_credit_number_duration', '3');
+  variable_set('uc_credit_number_unit', 'days');
+  variable_set('uc_credit_owner_enabled', 0);
+  variable_set('uc_credit_policy', 'Your billing information must match the billing address for the credit card entered below or we will be unable to process your payment.');
+  variable_set('uc_credit_start_enabled', 0);
+  variable_set('uc_credit_type_enabled', 0);
+  variable_set('uc_credit_validate_numbers', 1);
+  variable_set('uc_credit_visa', 1);
+  variable_set('uc_customer_list_address', 'billing');
+  variable_set('uc_field_address', 'Address');
+  variable_set('uc_field_city', 'City');
+  variable_set('uc_field_company', 'Company'); 
+  variable_set('uc_field_country', 'Country');
+  variable_set('uc_field_first_name', 'First name');
+  variable_set('uc_field_last_name', 'Last name');
+  variable_set('uc_field_phone', 'Phone number');
+  variable_set('uc_field_postal_code', 'Postal code');
+  variable_set('uc_field_street', 'Street address');
+  variable_set('uc_field_street1', 'Street address 1');
+  variable_set('uc_field_street2', 'Street address 2');
+  variable_set('uc_field_zone', 'State/Province');
+  variable_set('uc_footer_message', 'none');
+  variable_set('uc_image_', '');
+  variable_set('uc_image_product', 'field_image_cache');
+  variable_set('uc_image_subscription', 'field_image_cache');
+  variable_set('uc_minimum_subtotal', '0');
+  variable_set('uc_msg_continue_shopping', '');
+  variable_set('uc_msg_continue_shopping_format', '1');
+  variable_set('uc_msg_order_existing_user', 'Thank you for shopping at [store-name]. Your current order has been attached to the account we found matching your e-mail address.
+
+<a href="/user">Login</a> to view your current order status and order history. Remember to login when you make your next purchase for a faster checkout experience!');
+  variable_set('uc_msg_order_existing_user_format', '1');
+  variable_set('uc_msg_order_logged_in', 'Thank you for shopping at [store-name]. While logged in, you may continue shopping or <a href="[order-url]">view your current order status</a> and order history.');
+  variable_set('uc_msg_order_logged_in_format', '1');
+  variable_set('uc_msg_order_new_user', 'Thank you for shopping at [store-name]. A new account has been created for you here that you may use to view your current order status.
+
+<a href=\\"!user_url\\">Login</a> to your new account using the following information:
+<strong>Username:</strong> !new_username
+<strong>Password:</strong> !new_password');
+  variable_set('uc_msg_order_new_user_format', '1');
+  variable_set('uc_msg_order_submit', '<p>w00t! Way to go [order-first-name]. Your order is complete and you\'re ready to be Drupalized!</p>
+
+<p>Here is your order number in case you have any questions:  <strong>[order-id]</strong>.
+For your convenience, all of your order details have been emailed to [order-email].</p>');
+  variable_set('uc_msg_order_submit_format', '1');
+  variable_set('uc_pane_billing_enabled', 1);
+  variable_set('uc_pane_billing_weight', '4');
+  variable_set('uc_pane_cart_enabled', 1);
+  variable_set('uc_pane_cart_weight', '1');
+  variable_set('uc_pane_comments_enabled', 0);
+  variable_set('uc_pane_comments_weight', '7');
+  variable_set('uc_pane_coupon_enabled', 1);
+  variable_set('uc_pane_coupon_weight', '5');
+  variable_set('uc_pane_customer_enabled', 1);
+  variable_set('uc_pane_customer_weight', '2');
+  variable_set('uc_pane_delivery_enabled', 1);
+  variable_set('uc_pane_delivery_weight', '3');
+  variable_set('uc_pane_payment_enabled', 1);
+  variable_set('uc_pane_payment_weight', '6');
+  variable_set('uc_pane_quotes_enabled', 1);
+  variable_set('uc_pane_quotes_weight', '5');
+  variable_set('uc_pane_uc_termsofservice_agreement_checkout_enabled', 1);
+  variable_set('uc_pane_uc_termsofservice_agreement_checkout_weight', '6');
+  variable_set('uc_payment_credit_gateway', 'test_gateway');
+  variable_set('uc_payment_method_credit_checkout', 1);
+  variable_set('uc_payment_method_credit_weight', '2');
+  variable_set('uc_payment_method_free_order_checkout', 1);
+  variable_set('uc_payment_method_free_order_weight', '10');
+  variable_set('uc_payment_show_order_total_preview', 1);
+  variable_set('uc_pg_authorizenet_cc_txn_type', 'auth_capture');
+  variable_set('uc_pg_authorizenet_enabled', 1);
+  variable_set('uc_pg_test_gateway_cc_txn_type', 'auth_capture');
+  variable_set('uc_pg_test_gateway_enabled', 1);
+  variable_set('uc_product_add_to_cart_qty', 0);
+  variable_set('uc_product_add_to_cart_teaser', 1);
+  variable_set('uc_product_add_to_cart_text', 'Signup');
+  variable_set('uc_product_enable_nodes', FALSE);
+  variable_set('uc_product_field_enabled', array(
+    'display_price' => 1,
+    'image' => 0,
+    'model' => 0,
+    'list_price' => 0,
+    'cost' => 0,
+    'sell_price' => 0,
+    'weight' => 0,
+    'dimensions' => 0,
+    'add_to_cart' => 1,
+  ));
+  variable_set('uc_product_field_weight', array(
+    'display_price' => '-10',
+    'image' => '-2',
+    'model' => '0',
+    'list_price' => '2',
+    'cost' => '3',
+    'sell_price' => '4',
+    'weight' => '5',
+    'dimensions' => '6',
+    'add_to_cart' => '10',
+  ));
+  variable_set('uc_product_image_widget', '');
+  variable_set('uc_product_shippable_subscription', 1);
+  variable_set('uc_recurring_cancel_redirect', '/cancellation-survey');
+  variable_set('uc_recurring_checkout_fail', 'fail');
+  variable_set('uc_recurring_checkout_message', '');
+  variable_set('uc_recurring_checkout_process', 1);
+  variable_set('uc_recurring_payment_methods', array(
+    'credit' => 'credit',
+  ));
+  variable_set('uc_recurring_subscription_attribute', '1');
+  variable_set('uc_recurring_subscription_product_class', 'uc_recurring_subscription');
+  variable_set('uc_recurring_trigger_renewals', 0);
+  variable_set('uc_store_admin_page_display', '1'); 
+  variable_set('uc_store_city', '');
+  variable_set('uc_store_country', '840');
+  variable_set('uc_store_email_include_name', 1);
+  variable_set('uc_store_fax', '');
+  variable_set('uc_store_help_page', '');
+  variable_set('uc_store_phone', '');
+  variable_set('uc_store_postal_code', '');
+  variable_set('uc_store_street1', '');
+  variable_set('uc_store_street2', '');
+  variable_set('uc_store_zone', '');
+  variable_set('uc_teaser_add_to_cart_text', 'Signup');
+
   // Create a new 'subscriber' role and give it the 'view archive videos', and
   // a couple of other permisisons.
   $rid = db_result(db_query('SELECT rid FORM {role} WHERE name = "subscriber"'));
