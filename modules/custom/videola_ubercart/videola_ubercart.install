@@ -6,6 +6,8 @@
  * Random crap to get our Ubercart installation setup.
  */
 function videola_ubercart_install() {
+  // Make sure uc_product and uc_attribute modules are enabled.
+  drupal_install_modules(array('uc_product', 'uc_attribute'));
   // Setup ubercart variables.
   variable_set('uc_add_item_redirect', 'cart');
   variable_set('uc_address_fields', array(
