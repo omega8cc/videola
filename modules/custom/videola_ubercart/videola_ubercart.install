@@ -176,7 +176,6 @@ For your convenience, all of your order details have been emailed to [order-emai
   ));
   variable_set('uc_product_image_widget', '');
   variable_set('uc_product_shippable_subscription', 1);
-  variable_set('uc_recurring_cancel_redirect', '/cancellation-survey');
   variable_set('uc_recurring_checkout_fail', 'fail');
   variable_set('uc_recurring_checkout_message', '');
   variable_set('uc_recurring_checkout_process', 1);
