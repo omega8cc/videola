@@ -9,7 +9,7 @@
 - Videola Video Feature
 - VIdeola Broswer Feature
 - Videola Dashboard Feature
-- VIdeola Queue Feature
+- Videola Queue Feature
 - Videola UberCart Feature
 - Other Videola Functionality
 - Developed By
@@ -21,8 +21,8 @@
 --- WHAT IS VIDEOLA
 -----------------------------------------------------------------------------------------------------
 Videola <http://videola.tv> is an enterprise-level video management system and video delivery platform. It allows you to create paid-access or free-access video websites which can serve video to the desktop, mobile, or television-based devices. Create your own Netflix On-Demand style (subscription), Hulu style (ad supported), or Blockbuster / Amazon style (rental) streaming video websites with your own video content.
-      
-Built on Drupal <http://drupal.org>, Videola is a highly flexible, easily expandable, feature-rich open source solution for organizing and managing video content, users, and ecommerce. Want to see Videola in action? Check-out Drupalize.me. <http://drupalize.me> Or get ideas for what you can do with Videola!
+
+Built on Drupal <http://drupal.org>, Videola is a highly flexible, easily expandable, feature-rich open source solution for organizing and managing video content, users, and ecommerce. Want to see Videola in action? Check-out Drupalize.me <http://drupalize.me> to get ideas for what you can do with Videola!
 
 Videola is a base installation profile for creating your video portal website using Drupal. This package consists of a .make file which can download all dependencies of the profile using Drush Make and an installation profile.
 
@@ -39,7 +39,7 @@ If you have Drush <http://drupal.org/project/drush> & Drush Make <http://drupal.
 ------ You can download the most recent stable version on Videola <http://videola.tv>
 
 ---  Where do I put the file?
------- Put the file in the folder you want to be your Drupal root.     
+------ Put the file in the folder you want to be your Drupal root.
 
 ---  What command do I run?
 ------ <code>drush make videola.make path_to_my_drupal_root_folder</code>
@@ -56,11 +56,11 @@ If you have Drush <http://drupal.org/project/drush> & Drush Make <http://drupal.
 
 
 -----------------------------------------------------------------------------------------------------
---- HOW TO DOWNLOAD MANUALLY (not recommened)
+--- HOW TO DOWNLOAD MANUALLY (not recommend)
 -----------------------------------------------------------------------------------------------------
 Download Drupal <http://drupal.org> or PressFlow Drupal <http://pressflow.org> following standard procedures.
 
-Download the contributed modules/libraries/themes following the standard procedures.  
+Download the contributed modules/libraries/themes following the standard procedures.
 
 projects[admin][subdir] = "contrib"
 projects[adminrole][subdir] = "contrib"
@@ -222,7 +222,7 @@ For detailed information, please see the newly downloaded INSTALL.txt in the web
 ------- Click the link for "Visit your new site."
 
 --- Complete Site Configurations
------- The adminsitrative user (user/1)
+------ The administrative user (user/1)
 --------- Using the "wrench" admin menu in the upper left corner, select Administer > User Management > Users
 --------- Click "edit" for the "admin" user and update the email address and password
 ------ Site Elements
@@ -318,7 +318,7 @@ Videola is brought to you by your friends at Lullabot. <http://lullabot.com>
 
 
 -----------------------------------------------------------------------------------------------------
---- SUPPORT/FEAUTURE REQUESTS
+--- SUPPORT/FEATURE REQUESTS
 -----------------------------------------------------------------------------------------------------
 Please use the tools within GitHub to share ideas and communicate with each other about additional development.  We will be checking that area too!
 Videola is a development platform for you to use in creating your website, but if you are interested in hiring Lullabot to provide customization, please contact us at http://www.lullabot.com/contact.
