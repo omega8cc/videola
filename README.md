@@ -6,7 +6,7 @@ Built on [Drupal](http://drupal.org), Videola is a highly flexible, easily expan
 Videola is a base installation profile for creating a video portal website
 using Drupal. This package consists of two drush make files which download all dependencies of the project. The install profile uses [Profiler](http://drupal.org/project/profiler) to provide initial configuration settings and some default sample content. The easiest way to get started, assuming you have relatively recent versions of drush and drush make and git installed on your machine is:
 
-`drush make https://github.com/Lullabot/videola/blob/master/videola_starter.make`
+`drush make https://raw.github.com/Lullabot/videola/master/videola_starter.make videola`
 
 This initial alpha release of Videola currently uses local file storage for videos. While we don't recommend this as a long term solution, the videola_video feature module is designed to be swappable to allow you to support any video hosting solution. A feature module which will support Ooyala hosted videos is forthcoming.
 
