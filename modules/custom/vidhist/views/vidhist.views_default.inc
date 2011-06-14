@@ -565,7 +565,7 @@ function vidhist_views_default_views() {
         'product' => 0,
         'subscription' => 0,
         'page' => 0,
-        'videola_cloudfront' => 0,
+        'videola_video' => 0,
         'videola_profile' => 0,
         'videola_testimonial' => 0,
         'faq' => 0,

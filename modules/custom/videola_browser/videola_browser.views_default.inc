@@ -612,7 +612,7 @@ function videola_browser_views_default_views() {
         'uc_recurring_subscription' => 0,
         'plug' => 0,
         'videola_blog_post' => 0,
-        'cloudfront_video' => 0,
+        'videola_video' => 0,
         'page' => 0,
         'videola_profile' => 0,
         'videola_testimonial' => 0,
