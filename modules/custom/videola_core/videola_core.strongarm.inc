@@ -39,10 +39,10 @@ function videola_core_strongarm() {
       'energy' => array(
         'node' => array(
           'subclasses' => array(
-            'cloudfront_video' => array(
+            'videola_video' => array(
               'view' => '2',
               'view_auth' => '4',
-              'node_create' => '1000',
+              'node_create' => '10000',
               'comment_insert' => '200',
               'comment_publish' => '20',
             ),
