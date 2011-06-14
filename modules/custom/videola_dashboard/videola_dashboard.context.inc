@@ -26,11 +26,17 @@ function videola_dashboard_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
+        'boxes-videola_anonymous_signup_box' => array(
+          'module' => 'boxes',
+          'delta' => 'videola_anonymous_signup_box',
+          'region' => 'sidebar_last',
+          'weight' => 0,
+        ),
         'user-0' => array(
           'module' => 'user',
           'delta' => 0,
           'region' => 'sidebar_last',
-          'weight' => 0,
+          'weight' => 1,
         ),
         'boxes-videola_anon_front' => array(
           'module' => 'boxes',
