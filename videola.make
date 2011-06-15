@@ -139,9 +139,6 @@ projects[similarterms][version] = "2.2"
 projects[simpletest][subdir] = "contrib"
 projects[simpletest][version] = "2.10"
 
-projects[statistics_advanced][subdir] = "contrib"
-projects[statistics_advanced][version] = "1.5"
-
 projects[stringoverrides][subdir] = "contrib"
 projects[stringoverrides][version] = "1.8"
 

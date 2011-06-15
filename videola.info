@@ -148,7 +148,6 @@ dependencies[] = radioactivity
 dependencies[] = role_watchdog
 dependencies[] = securepages
 dependencies[] = session_limit
-dependencies[] = statistics_advanced
 dependencies[] = stringoverrides
 dependencies[] = strongarm
 dependencies[] = term_node_count
