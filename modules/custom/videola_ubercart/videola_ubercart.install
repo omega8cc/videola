@@ -200,7 +200,7 @@ For your convenience, all of your order details have been emailed to [order-emai
 
   // Create a new 'subscriber' role and give it the 'view archive videos', and
   // a couple of other permisisons.
-  $rid = db_result(db_query('SELECT rid FORM {role} WHERE name = "subscriber"'));
+  $rid = db_result(db_query('SELECT rid FROM {role} WHERE name = "subscriber"'));
   if ($rid === FALSE) {
     db_query('INSERT INTO {role} (name) VALUES ("subscriber")');
     $rid = db_last_insert_id('role', 'rid');
