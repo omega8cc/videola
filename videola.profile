@@ -67,7 +67,12 @@ function videola_profile_tasks(&$task, $url) {
     profiler_profile_tasks(profiler_v2_load_config('videola'), $task, $url);
     // Profiler stets the $task to 'profile-finished', in order to add our own
     // tasks we need to override that and set it to our task.
-    $task = 'videola';
+    if (defined('DRUSH_BASE_PATH')) {
+      $task = 'profile-finished'; // Required to support Aegir.
+    }
+    else {
+      $task = 'videola';
+    }
   }
 
   if ($task == 'videola') {
