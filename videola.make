@@ -136,9 +136,6 @@ projects[session_limit][version] = "2.1"
 projects[similarterms][subdir] = "contrib"
 projects[similarterms][version] = "2.2"
 
-projects[simpletest][subdir] = "contrib"
-projects[simpletest][version] = "2.10"
-
 projects[stringoverrides][subdir] = "contrib"
 projects[stringoverrides][version] = "1.8"
 
@@ -192,7 +189,7 @@ projects[chaptermarkers][download][type] = git
 projects[chaptermarkers][download][url] = http://git.drupal.org/sandbox/eojthebrave/1131026.git
 
 projects[ejectorseat][type] = module
-projects[ejectorseat][subir] = "contrib"
+projects[ejectorseat][subdir] = "contrib"
 projects[ejectorseat][download][type] = git
 projects[ejectorseat][download][url] = git://github.com/Lullabot/ejectorseat.git
 
@@ -202,6 +199,13 @@ libraries[jquery_ui][download][type] = "get"
 libraries[jquery_ui][download][url] = "http://jquery-ui.googlecode.com/files/jquery.ui-1.6.zip"
 libraries[jquery_ui][directory_name] = "jquery.ui"
 libraries[jquery_ui][destination] = "modules/contrib/jquery_ui"
+
+; Download jquery.cycle as a library
+libraries[jquery.cycle][download][type] = "get"
+libraries[jquery.cycle][download][url]  = "https://raw.github.com/malsup/cycle/master/jquery.cycle.all.js"
+libraries[jquery.cycle][directory_name] = "jquery.cycle"
+libraries[jquery.cycle][download][filename] = "jquery.cycle.all.min.js"
+libraries[jquery.cycle][destination]    = "libraries"
 
 ; Patches
 projects[ubercart][patch][] = 'http://drupal.org/files/issues/ubercart_api.patch'

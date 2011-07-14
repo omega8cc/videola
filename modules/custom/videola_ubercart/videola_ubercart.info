@@ -5,3 +5,6 @@ package = "Videola"
 project = "videola_ubercart"
 project status url = "http://code.lullabot.com/fserver"
 version = "6.x-1.0-alpha"
+dependencies[] = uc_roles
+dependencies[] = uc_atctweaks
+dependencies[] = uc_recurring_subscription
