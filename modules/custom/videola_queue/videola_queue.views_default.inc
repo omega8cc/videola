@@ -211,7 +211,7 @@ function videola_queue_views_default_views() {
     'type' => 'none',
   ));
   $handler->override_option('title', 'My video queue');
-  $handler->override_option('empty', 'You have not added any items to your video queue yet. Click here to <a href="/videos">browse the videos</a> and add some to your queue.');
+  $handler->override_option('empty', 'You have not added any items to your video queue yet. Click here to <a href="videos">browse the videos</a> and add some to your queue.');
   $handler->override_option('empty_format', '1');
   $handler->override_option('items_per_page', 100);
   $handler->override_option('style_plugin', 'draggabletable');
