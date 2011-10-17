@@ -49,7 +49,7 @@ If you have Drush <http://drupal.org/project/drush> & Drush Make <http://drupal.
 
 --- When asked if you want to make new site in your current directory, answer yes.
 
---- NOTE: If you want to download Pressflow Drupal core instead of normal Drupal core, in the make file, you can uncomment the three lines with "projects[pressflow]" 
+--- NOTE: If you want to download Pressflow Drupal core instead of normal Drupal core, in the make file, you can uncomment the three lines with "projects[pressflow]". If you do use pressflow, there is a current incompatibility with an un-patched boxes module. You can read about the issue (and find a patch to fix it) here: http://drupal.org/node/887260.
 
 --- NOTE: If you don't want to download Drupal core using our Drush Make file, but only want the contributed and custom modules, run this instead:
 --------- <code>drush make --no-core --contrib-destination=. videola.make</code>
