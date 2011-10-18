@@ -113,30 +113,32 @@ function videola_core_my_subscription_block($uid) {
   $account = user_load($uid);
 
   // Get list of all subscriptions associated with this user, newest first.
-  $fees = uc_recurring_get_user_fees($uid);
-  if ($fees) {
+  if (module_exists('uc_recurring')) {
+    $fees = uc_recurring_get_user_fees($uid);
+    if ($fees) {
 
-    // Load the latest one.
-    $latest_fee = array_pop($fees);
-    $subscription = uc_recurring_fee_user_load($latest_fee->rfid);
+      // Load the latest one.
+      $latest_fee = array_pop($fees);
+      $subscription = uc_recurring_fee_user_load($latest_fee->rfid);
 
-    // Load its corresponding order.
-    $order = uc_order_load($subscription->order_id);
+      // Load its corresponding order.
+      $order = uc_order_load($subscription->order_id);
     
-    // Prepare some nice variables for the template.
-    $order->full_name = check_plain($order->billing_first_name . ' ' . $order->billing_last_name);
-    // @todo: Figure out a way to get the last 4 digits. Hrm.
-    $order->last_4 = '****';
-    $order->address = uc_order_address($order, 'billing');
-    $subscription->type = check_plain($order->products[0]->title);
+      // Prepare some nice variables for the template.
+      $order->full_name = check_plain($order->billing_first_name . ' ' . $order->billing_last_name);
+      // @todo: Figure out a way to get the last 4 digits. Hrm.
+      $order->last_4 = '****';
+      $order->address = uc_order_address($order, 'billing');
+      $subscription->type = check_plain($order->products[0]->title);
 
-    // Get current plan name (independent if they have been billed for it yet b/c they switched)
-    $product_node = $subscription->data['nid'];
-    $product_attributes = uc_attribute_load_product_attributes($product_node);
-    $fee_amount = $subscription->fee_amount;
-    foreach($product_attributes[1]->options as $option=>$attribute) {
-      if ($fee_amount == $attribute->price) {
-        $subscription->frequency = $attribute->name;
+      // Get current plan name (independent if they have been billed for it yet b/c they switched)
+      $product_node = $subscription->data['nid'];
+      $product_attributes = uc_attribute_load_product_attributes($product_node);
+      $fee_amount = $subscription->fee_amount;
+      foreach($product_attributes[1]->options as $option=>$attribute) {
+        if ($fee_amount == $attribute->price) {
+          $subscription->frequency = $attribute->name;
+        }
       }
     }
   }
