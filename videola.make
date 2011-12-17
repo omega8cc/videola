@@ -53,7 +53,7 @@ projects[date][subdir] = "contrib"
 projects[date][version] = "2.7"
 
 projects[devel][subdir] = "contrib"
-projects[devel][version] = "1.23"
+projects[devel][version] = "1.26"
 
 projects[diff][subdir] = "contrib"
 projects[diff][version] = "2.1"
@@ -167,10 +167,10 @@ projects[vertical_tabs][subdir] = "contrib"
 projects[vertical_tabs][version] = "1.0-rc1"
 
 projects[views][subdir] = "contrib"
-projects[views][version] = "2.12"
+projects[views][version] = "2.16"
 
 projects[views_bulk_operations][subdir] = "contrib"
-projects[views_bulk_operations][version] = "1.10"
+projects[views_bulk_operations][version] = "1.12"
 
 projects[views_calc][subdir] = "contrib"
 projects[views_calc][version] = "1.3"
