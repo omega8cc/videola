@@ -46,27 +46,27 @@ our script to download the latest version of Drupal, contributed modules and
 custom modules.
 
 - Where is the Drush Make file?
-    - We keep an updated version of the make file on Git Hub in our project
+  - We keep an updated version of the make file on Git Hub in our project
     section. https://github.com/Lullabot/videola
-    - You can also download the most recent stable version on [Videola][1]
+  - You can also download the most recent stable version on [Videola][1]
 
 - Where do I put the file?
-    - Put the file in the folder you want to be your Drupal root.
+  - Put the file in the folder you want to be your Drupal root.
 
 - What command do I run?
-    - `drush make videola.make path_to_my_drupal_root_folder`
+  - `drush make videola.make path_to_my_drupal_root_folder`
 OR
-    - cd into your drupal root directory and run: `drush make videola.make`
-    - When asked if you want to make new site in your current directory, answer
-yes.
-    - NOTE: If you want to download Pressflow Drupal core instead of normal
-Drupal core, in the make file, you can uncomment the three lines with
-"`projects[pressflow]`". If you do use pressflow, there is a current
-incompatibility with an un-patched boxes module. You can read about the issue
-(and find a patch to fix it) [here][6].
-    - NOTE: If you don't want to download Drupal core using our Drush Make file,
-but only want the contributed and custom modules, run this instead:
-`drush make --no-core --contrib-destination=. videola.make`
+  - cd into your drupal root directory and run: `drush make videola.make`
+  - When asked if you want to make new site in your current directory, answer
+    yes.
+  - NOTE: If you want to download Pressflow Drupal core instead of normal
+    Drupal core, in the make file, you can uncomment the three lines with
+    "`projects[pressflow]`". If you do use pressflow, there is a current
+    incompatibility with an un-patched boxes module. You can read about the
+    issue (and find a patch to fix it) [here][6].
+  - NOTE: If you don't want to download Drupal core using our Drush Make file,
+    but only want the contributed and custom modules, run this instead:
+    `drush make --no-core --contrib-destination=. videola.make`
 
 
 HOW TO DOWNLOAD MANUALLY (not recommend)
@@ -96,17 +96,18 @@ website root.  The basic steps are outlined below.
   - Click the link for "Visit your new site."
 
 - Complete Site Configurations
--- The administrative user (user/1)
---- Using the "wrench" admin menu in the upper left corner, select Administer >
-User Management > Users
---- Click "edit" for the "admin" user and update the email address and password
--- Site Elements
---- Using the "wrench" admin menu in the upper left corner, select Administer >
-Site Configuration > Site Information (admin/settings/site-information)
---- Set the sitename and site email address
--- Placeholder Content
---- We have created some placeholder content for you so you can see the Features
-in action.
+  - The administrative user (user/1)
+    - Using the "wrench" admin menu in the upper left corner, select Administer
+      > User Management > Users
+    - Click "edit" for the "admin" user and update the email address and
+      password
+  - Site Elements
+    - Using the "wrench" admin menu in the upper left corner, select Administer
+      > Site Configuration > Site Information (admin/settings/site-information)
+    - Set the sitename and site email address
+  - Placeholder Content
+    - We have created some placeholder content for you so you can see the
+      Features in action.
 
 
 VIDEOLA CORE FEATURE
@@ -125,7 +126,7 @@ for integration with the video hosting provider to work.
 ### CONTENT TYPE DEFINITION: Video
 
 - Machine name = 'video'
--- All video provider plugins MUST implement a CCK content type with a machine
+  - All video provider plugins MUST implement a CCK content type with a machine
 readable name of 'video'.
 - `node.title` = "Title"
 - `node.body` = "Description" - The primary description field for the video.
