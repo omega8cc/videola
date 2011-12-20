@@ -81,7 +81,7 @@ HOW TO INSTALL
 --------------
 If you are new to Drupal and require some guidance getting started, may we be
 so humble as to recommend our very own Videola-based Drupal video training
-website: [Drupalize.Me][].
+website: [Drupalize.Me][3].
 
 For detailed information, please see the newly downloaded INSTALL.txt in the
 website root.  The basic steps are outlined below.
