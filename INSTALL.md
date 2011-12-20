@@ -25,10 +25,10 @@ Create your own Netflix On-Demand style (subscription), Hulu style
 (ad supported), or Blockbuster / Amazon style (rental) streaming video websites
 with your own video content.
 
-Built on [Drupal][2], Videola is a highly flexible, easily expandable, feature-
-rich open source solution for organizing and managing video content, users, and
-ecommerce. Want to see Videola in action? Check-out [Drupalize.me][3] to get
-ideas for what you can do with Videola!
+Built on [Drupal][2], Videola is a highly flexible, easily expandable,
+feature-rich open source solution for organizing and managing video content,
+users, and ecommerce. Want to see Videola in action? Check-out [Drupalize.me][3]
+to get ideas for what you can do with Videola!
 
 Videola is a base installation profile for creating your video portal website
 using Drupal. This package consists of a .make file which can download all
@@ -46,24 +46,25 @@ our script to download the latest version of Drupal, contributed modules and
 custom modules.
 
 - Where is the Drush Make file?
--- We keep an updated version of the make file on Git Hub in our project section
-https://github.com/Lullabot/videola
--- You can also download the most recent stable version on [Videola][1]
+    - We keep an updated version of the make file on Git Hub in our project
+    section. https://github.com/Lullabot/videola
+    - You can also download the most recent stable version on [Videola][1]
 
 - Where do I put the file?
--- Put the file in the folder you want to be your Drupal root.
+    - Put the file in the folder you want to be your Drupal root.
 
 - What command do I run?
--- `drush make videola.make path_to_my_drupal_root_folder`
+    - `drush make videola.make path_to_my_drupal_root_folder`
 OR
--- cd into your drupal root directory and run: `drush make videola.make`
--- When asked if you want to make new site in your current directory, answer yes.
---- NOTE: If you want to download Pressflow Drupal core instead of normal
+    - cd into your drupal root directory and run: `drush make videola.make`
+    - When asked if you want to make new site in your current directory, answer
+yes.
+    - NOTE: If you want to download Pressflow Drupal core instead of normal
 Drupal core, in the make file, you can uncomment the three lines with
 "`projects[pressflow]`". If you do use pressflow, there is a current
 incompatibility with an un-patched boxes module. You can read about the issue
 (and find a patch to fix it) [here][6].
---- NOTE: If you don't want to download Drupal core using our Drush Make file,
+    - NOTE: If you don't want to download Drupal core using our Drush Make file,
 but only want the contributed and custom modules, run this instead:
 `drush make --no-core --contrib-destination=. videola.make`
 
@@ -87,12 +88,12 @@ website root.  The basic steps are outlined below.
 
 - Create a database and remember your database name, database user and password.
 - Copy my_drupal_root/sites/default/default.settings.php and name it settings.php
--- Update the following line with your database information:
--- $db_url = 'mysql://username:password@localhost/databasename';
+  - Update the following line with your database information:
+  - $db_url = 'mysql://username:password@localhost/databasename';
 - Go to http://mywebsite.com/install.php and select Videola Base Profile.
 - Follow the instructions on the screen
--- Enter prices for each subscription type
--- Click the link for "Visit your new site."
+  - Enter prices for each subscription type
+  - Click the link for "Visit your new site."
 
 - Complete Site Configurations
 -- The administrative user (user/1)
