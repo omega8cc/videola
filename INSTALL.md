@@ -193,21 +193,26 @@ There are many settings in Ubercart, all of which can be found using the
 administrative menu by clicking the "wrench" in the top left corner of the site.
 Administration > Store Configuration
 
-The user signs up for the subscription at /signup.  This membership node can be
+The user signs up for the subscription at /signup. This membership node can be
 configured at /node/1/edit.
+
 - Description text area.
 - Product Information vertical tab: Configure the "Sell Price".
 
 The Payment option select list can be configured at /admin/store/attributes.
 Click "options" to specify monthly/bi-annual/yearly prices.
+
 - http://www.ubercart.org/docs/user/8390/attribute_settings
 
 Configure how you accept money: /admin/store/settings/payment
+
 - http://www.ubercart.org/docs/user/8457/payment_settings
 
 Configure the recurring payment settings: /admin/store/settings/payment
 
-Configure conditional actions to control things like emails sent to customers: /admin/store/ca
+Configure conditional actions to control things like emails sent to customers:
+/admin/store/ca
+
 - http://www.ubercart.org/docs/user/7657/configuring_conditional_actions
 
 
