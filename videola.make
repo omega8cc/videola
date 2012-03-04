@@ -164,7 +164,7 @@ projects[uc_termsofservice][subdir] = "contrib"
 projects[uc_termsofservice][version] = "1.2"
 
 projects[vertical_tabs][subdir] = "contrib"
-projects[vertical_tabs][version] = "1.0-rc1"
+projects[vertical_tabs][version] = "1.0-rc2"
 
 projects[views][subdir] = "contrib"
 projects[views][version] = "2.16"
@@ -209,3 +209,4 @@ libraries[jquery.cycle][destination]    = "libraries"
 
 ; Patches
 projects[ubercart][patch][] = 'http://drupal.org/files/issues/ubercart_api.patch'
+projects[vertical_tabs][patch][] = 'http://drupal.org/files/issues/533720-vertical_tabs-p1-D6.patch'
