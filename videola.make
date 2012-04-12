@@ -191,6 +191,7 @@ projects[chaptermarkers][download][url] = http://git.drupal.org/sandbox/eojthebr
 projects[ejectorseat][type] = module
 projects[ejectorseat][subdir] = "contrib"
 projects[ejectorseat][download][type] = git
+projects[ejectorseat][download][branch] = 6.x-1.x
 projects[ejectorseat][download][url] = git://github.com/Lullabot/ejectorseat.git
 
 ; Libraries
