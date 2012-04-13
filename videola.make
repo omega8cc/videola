@@ -22,6 +22,9 @@ projects[adminrole][version] = "1.3"
 projects[advanced_help][subdir] = "contrib"
 projects[advanced_help][version] = "1.2"
 
+projects[autoload][subdir] = "contrib"
+projects[autoload][version] = "2.1"
+
 projects[better_formats][subdir] = "contrib"
 projects[better_formats][version] = "1.2"
 
@@ -112,6 +115,9 @@ projects[logintoboggan][version] = "1.9"
 projects[mass_contact][subdir] = "contrib"
 projects[mass_contact][version] = "1.1"
 
+projects[oauth][subdir] = "contrib"
+projects[oauth][version] = "3.0-beta4"
+
 projects[pathauto][subdir] = "contrib"
 projects[pathauto][version] = "1.5"
 
@@ -129,6 +135,15 @@ projects[securepages][version] = "1.9"
 
 projects[semanticviews][subdir] = "contrib"
 projects[semanticviews][version] = "1.1"
+
+projects[services][subdir] = "contrib"
+projects[services][version] = "3.x-dev"
+; Need this patch so the rest_server module can be installed as part of an
+; install profile. http://drupal.org/node/1532106
+projects[services][patch][] = "http://drupal.org/files/1532106-1-spyc_runtime-eojthebrave.patch"
+
+projects[services_views][subdir] = "contrib"
+projects[services_views][version] = "1.x-dev"
 
 projects[session_limit][subdir] = "contrib"
 projects[session_limit][version] = "2.1"
