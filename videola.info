@@ -114,6 +114,16 @@ dependencies[] = uc_recurring_product
 dependencies[] = uc_recurring_subscription
 dependencies[] = uc_recurring
 
+; Services
+dependencies[] = autoload
+dependencies[] = services
+dependencies[] = rest_server
+dependencies[] = oauth_common
+dependencies[] = oauth_common_providerui
+dependencies[] = services_oauth
+dependencies[] = services_views
+
+
 ; Pretty
 dependencies[] = jquery_ui
 dependencies[] = jquery_update
@@ -160,6 +170,7 @@ dependencies[] = videola_dashboard
 dependencies[] = videola_queue
 dependencies[] = videola_browser
 dependencies[] = videola_ubercart
+dependencies[] = videola_services
 
 ; Custom
 dependencies[] = chaptermarkers
