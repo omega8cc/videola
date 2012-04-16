@@ -34,6 +34,7 @@ class vidhist_handler_field_time extends views_handler_field {
       '#options' => array(
         'interval' => t('hours/minutes/seconds (with granularity)'),
         'raw' => t('raw value (in seconds)'),
+        'raw_milliseconds' => t('raw value (in milliseconds)'),
       ),
       '#default_value' => isset($this->options['time_format']) ? $this->options['time_format'] : 'interval',
     );
@@ -61,15 +62,13 @@ class vidhist_handler_field_time extends views_handler_field {
 
   function render($values) {
     $value = $values->{$this->field_alias};
-    $format = $this->options['time_format'];
-    $granularity = $this->options['time_granularity'];
-    if ($format == 'raw') {
-      $output = $value;
+    switch ($this->options['time_format']) {
+      case 'raw':
+        return $value;
+      case 'raw_milliseconds':
+        return $value * 1000;
+      default:
+        return format_interval($value, $this->options['time_granularity']);
     }
-    else {
-      $output = format_interval($value, $granularity);
-    }
-    return $output;
   }
-  
 }

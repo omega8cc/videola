@@ -82,8 +82,8 @@ function vidhist_views_data() {
     ),
   );
   
-  // Timestamp field.
-  $data['vidhist']['timestamp'] = array(
+  // Timestamp and duration fields.
+  $data['vidhist']['timestamp'] = $data['vidhist']['duration'] = array(
     'title' => t('Time stamp'),
     'help' => t('Date/time that viewing happened.'),
     'field' => array(
@@ -97,6 +97,10 @@ function vidhist_views_data() {
       'handler' => 'views_handler_filter_date',
     ),
   );
+
+  // Duration field.
+  $data['vidhist']['duration']['title'] = t('Duration');
+  $data['vidhist']['duration']['help'] = t('Total length of video in seconds.');
   
   // Viewtime field.
   $data['vidhist']['viewtime'] = array(
@@ -234,6 +238,30 @@ function vidhist_views_data() {
     ),
   );
 
+  // Resume/Play Again link.
+  $data['vidhist']['play_resume_link'] = array(
+    'field' => array(
+      'title' => t('Play/Resume Link'),
+      'help' => t('Provide a simple link to play/resume the video.'),
+      'handler' => 'vidhist_handler_field_play_resume_link',
+    ),
+  );
+
+
+  // Average View Time per Day.
+  $data['vidhist']['avg_view'] = array(
+    'title' => t('Average View Time per Day'),
+    'help' => t('Show how often this video is watched.'),
+    'real field' => 'viewtime',
+    'field' => array(
+      'handler' => 'vidhist_handler_field_avg_view',
+      'click sortable' => TRUE,
+    ),
+  /*  'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),*/
+  );
+
   return $data;
 }
 
@@ -249,6 +277,12 @@ function vidhist_views_handlers() {
     ),
     'handlers' => array(
       'vidhist_handler_field_time' => array(
+        'parent' => 'views_handler_field',
+      ),
+      'vidhist_handler_field_play_resume_link' => array(
+        'parent' => 'views_handler_field_node_link',
+      ),
+      'vidhist_handler_field_avg_view' => array(
         'parent' => 'views_handler_field',
       ),
     ),

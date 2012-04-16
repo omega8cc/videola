@@ -1,3 +1,3 @@
-core = 6.x
 name = Video History
 description = Keeps user/global video viewing stats and history.
+core = 6.x

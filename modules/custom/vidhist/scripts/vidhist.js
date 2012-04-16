@@ -18,6 +18,13 @@ Drupal.vidHist.setPlayer = function(player) {
 }
 
 /**
+ * Sets the duration of the video being played.
+ */
+Drupal.vidHist.setDuration = function(duration) {
+  Drupal.vidHist.$pl.duration = duration;
+}
+
+/**
  * Sends playing information back to the server, usually when the player is 
  * paused / stopped or the windows is closed. 
  */
@@ -26,10 +33,12 @@ Drupal.vidHist.sendData = function(manual) {
   $.post(Drupal.settings.basePath + '?q=_vidhist', {
     start : Math.round(Drupal.vidHist.$pl.data('started')),
     end : Math.round(Drupal.vidHist.$pl.data('playHead')),
+    duration: Math.round(Drupal.vidHist.$pl.data('duration')),
     nid : Drupal.settings.vidHist.nid,
     delta : Drupal.vidHist.player.id,
     auto : auto,
-    token : Drupal.vidHist.$pl.data('token')
+    token : Drupal.vidHist.$pl.data('token'),
+    uid: Drupal.settings.vidHist.uid
   });
 }
 
@@ -59,10 +68,15 @@ Drupal.vidHist.restartTimer = function() {
 /**
  * This function should be called everytime the player cursor position changes.
  */
-Drupal.vidHist.event.playheadTimeChanged = function(started, playHead) {
+Drupal.vidHist.event.playheadTimeChanged = function(started, playHead, duration) {
   if (Drupal.vidHist.$pl.data('storeStart')) {
     Drupal.vidHist.$pl.data('started', started);
     Drupal.vidHist.$pl.data('storeStart', false);
+  }
+  // Only process the duration if we don't have it already.
+  if (!Drupal.vidHist.$pl.data('duration')) {
+    Drupal.vidHist.$pl.data('duration',duration);
+    console.log(duration);
   }
   Drupal.vidHist.$pl.data('playHead', playHead);
 }

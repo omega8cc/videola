@@ -38,6 +38,11 @@ function vidhist_schema() {
         'type' => 'int',
         'not null' => TRUE,
       ),
+      'duration' => array(
+        'description' => t('Total duration of the video in seconds'),
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
       'viewtime' => array(
         'description' => t('Length of chunk'),
         'type' => 'int',
@@ -71,6 +76,7 @@ function vidhist_schema() {
       ),
     ),
     'primary key' => array('vhid'),
+    'indexes' => array('nid_uid_latest' => array('nid', 'uid', 'latest')),
   );
   return $schema;
 }
@@ -119,6 +125,24 @@ function vidhist_update_6101() {
     'not null' => TRUE,
   );
   db_add_field($ret, 'vidhist', 'vhid', $field, array('primary key' => array('vhid')));
+
+  return $ret;
+}
+
+/**
+ * Add a duration column to {vidhist} and an index on nid + uid + latest.
+ */
+function vidhist_update_6102() {
+  $ret = array();
+
+  $field = array(
+    'description' => t('Total duration of the video in seconds'),
+    'type' => 'int',
+    'not null' => TRUE,
+  );
+  db_add_field($ret, 'vidhist', 'duration', $field);
+
+  db_add_index($ret, 'vidhist', 'nid_uid_latest', array('nid', 'uid', 'latest'));
 
   return $ret;
 }

@@ -1,3 +1,13 @@
+/**
+ * @file
+ * Vidhist integration for Ooyala video player.
+ *
+ * @todo:
+ * - Test that this still works, lots of changes have been made to the module
+ *   since the last time ooyala was used.
+ * - Send video duration to backend.
+ */
+
 // Initialize Drupal.ooyala if it hasn't been yet since it is possible for this
 // module's javascript to be loaded before ooyala_player.js
 Drupal.ooyala = Drupal.ooyala || {'listeners': {}};

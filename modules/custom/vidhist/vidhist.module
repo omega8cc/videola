@@ -17,6 +17,7 @@
  * Implementation of hook_init()
  */
 function vidhist_init() {
+  global $user;
   if (user_access('keep video viewing history') && arg(0) == 'node' && is_numeric(arg(1))) {
     $nid = arg(1);
     $path = drupal_get_path('module', 'vidhist');
@@ -33,6 +34,7 @@ function vidhist_init() {
       'vidHist' => array(
         'interval' => variable_get('vidhist_interval', 60) * 1000,
         'nid' => $nid,
+        'uid' => $user->uid  
       )), 'setting');
   }
 }
@@ -84,6 +86,7 @@ function vidhist_cron() {
  *  - delta:     video id on the page
  *  - start:     start time for this viewing chunk
  *  - end:       end time for this viewing chunk
+ *  - duration:  total duration of the video in seconds
  *  - auto:      boolean indicating whether status was sent automatically (autosave)
  *               or as a result of user interaction with the video
  *  - token:     a (random) token to distinguish this viewing chunk
@@ -95,17 +98,22 @@ function vidhist_cron() {
 function vidhist_ajax() {
   global $user;
   
-  if ($user->uid && user_access('keep video viewing history')) {
+  if (user_access('keep video viewing history')) {
     $record->nid = (int)$_POST['nid'];
     $record->delta = $_POST['delta'] ? $_POST['delta'] : '';
     $record->start = (int)$_POST['start'];
     $record->end = (int)$_POST['end'];
+    $record->duration = (int)$_POST['duration'];
     $record->viewtime = $_POST['end'] - $_POST['start'];
     $record->auto = $_POST['auto'] ? 1 : 0;
     $record->token = $_POST['token'];
+    $record->uid = $_POST['uid'];
         
     // do some validation on the post data
-    if (is_numeric($record->nid) && is_numeric($record->start) && is_numeric($record->end) && $record->viewtime > 10) {
+    // Also make sure that user id reported in ajax call is the same as current user id. 
+    // This may differ briefly when user has logged off in an another tab. See unfuddle ticket #1086  
+    if (is_numeric($record->nid) && is_numeric($record->start) && is_numeric($record->end) && $record->viewtime > 10
+            && $user->uid == $record->uid) {
     
       $record->uid = $user->uid;
       $record->timestamp = time();
@@ -114,7 +122,7 @@ function vidhist_ajax() {
       
       // check to see if there's an existing (autosaved) record with this token
       $existing = db_result(db_query("SELECT nid FROM {vidhist} WHERE token='%s' AND nid=%d AND delta='%s' AND uid=%d", $record->token, $record->nid, $record->delta, $record->uid));
-      
+
       // this probably isn't the right way to do this, but we're about to save the new info
       // so we remove 'latest' from all instances of this nid/delta/user in the vidhist table
       db_query("UPDATE {vidhist} SET latest=0 WHERE nid=%d AND delta='%s' AND uid=%d", $record->nid, $record->delta, $record->uid);
@@ -125,11 +133,11 @@ function vidhist_ajax() {
         // Final save. Save and remove tokens from the db. 
         if (!$existing) {
           // this is a new (non auto) save, video was probably played for less than 1 min
-          db_query("INSERT INTO {vidhist} (nid, delta, start, end, viewtime, auto, token, uid, timestamp, ip, latest) VALUES (%d, '%s', %d, %d, %d, %d, %d, %d, %d, '%s', %d)", $record->nid, $record->delta, $record->start, $record->end, $record->viewtime, 0, 0, $record->uid, $record->timestamp, $record->ip, $record->latest);
+          db_query("INSERT INTO {vidhist} (nid, delta, start, end, duration, viewtime, auto, token, uid, timestamp, ip, latest) VALUES (%d, '%s', %d, %d, %d, %d, %d, %d, %d, %d, '%s', %d)", $record->nid, $record->delta, $record->start, $record->end, $record->duration, $record->viewtime, 0, 0, $record->uid, $record->timestamp, $record->ip, $record->latest);
         }
         else {
           // video has been paused or shuttled - this is the final save of this chunk
-          db_query("UPDATE {vidhist} SET start=%d, end=%d, viewtime=%d, auto=0, token=0, timestamp=%d, ip='%s', latest=%d WHERE nid=%d AND uid=%d AND delta='%s' AND token=%d", $record->start, $record->end, $record->viewtime, $record->timestamp, $record->ip, $record->latest, $record->nid, $record->uid, $record->delta, $record->token);
+          db_query("UPDATE {vidhist} SET start=%d, end=%d, duration=%d, viewtime=%d, auto=0, token=0, timestamp=%d, ip='%s', latest=%d WHERE nid=%d AND uid=%d AND delta='%s' AND token=%d", $record->start, $record->end, $record->duration, $record->viewtime, $record->timestamp, $record->ip, $record->latest, $record->nid, $record->uid, $record->delta, $record->token);
         }
       }
       else {
@@ -138,11 +146,13 @@ function vidhist_ajax() {
         $update = $existing ? array('token', 'nid', 'delta', 'uid') : array();
         drupal_write_record('vidhist', $record, $update);
       }
+      print t('vidhist: Got it!');
+    } else {
+      print t('vidhist: Failed Validation');
     }
-    print t('Got it!');
   }
   else {
-    print t('Not so much');
+    print t('vidhist: Ignored');
   }
 }
 
