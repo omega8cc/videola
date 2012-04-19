@@ -15,7 +15,7 @@ function videola_services_default_services_endpoint() {
     'services_oauth' => array(
       'oauth_context' => 'videola_oauth',
       'authorization' => 'deafult',
-      'credentials' => 'consumer',
+      'credentials' => 'none',
     ),
     'services' => 'services',
   );
@@ -40,6 +40,13 @@ function videola_services_default_services_endpoint() {
     ),
   );
   $endpoint->resources = array(
+    'console' => array(
+      'actions' => array(
+        'authorize' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
     'comment' => array(
       'operations' => array(
         'retrieve' => array(
@@ -95,6 +102,13 @@ function videola_services_default_services_endpoint() {
     'views' => array(
       'operations' => array(
         'retrieve' => array(
+          'enabled' => 1,
+        ),
+      ),
+    ),
+    'vidhist' => array(
+      'operations' => array(
+        'create' => array(
           'enabled' => 1,
         ),
       ),
