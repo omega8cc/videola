@@ -1,0 +1,5 @@
+name = Videola Console
+description = API and UI integration for consoles.
+core = 6.x
+package = Videola
+dependencies[] = services

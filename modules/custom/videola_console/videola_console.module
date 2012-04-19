@@ -1,0 +1,201 @@
+<?php
+/**
+ * @file
+ */
+
+define('VIDEOLA_CONSOLE_DEVICE_LIMIT', 4);
+
+/**
+ * Implements hook_menu().
+ */
+function videola_console_menu() {
+  $items = array();
+  $items['device/authorize'] = array(
+    'title' => t('Authorize New Device'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('videola_console_authorize_form'),
+    'access callback' => 'videola_console_user_access',
+    'type' => MENU_CALLBACK,
+    'file' => 'videola_console.pages.inc',
+  );
+  $items['device/%/remove'] = array(
+    'title' => t('Remove device'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('videola_console_device_remove_confirm', 1),
+    'access callback' => 'videola_console_user_access',
+    'type' => MENU_CALLBACK,
+    'file' => 'videola_console.pages.inc',
+  );
+  $items['admin/settings/videola_console'] = array(
+    'title' => t('Videola Console Settings'),
+    'description' => t('Settings for the videola console API.'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('videola_console_settings'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'videola_console.pages.inc',
+  );
+  $items['user/%user/devices'] = array(
+    'title' => t('Devices'),
+    'page callback' => 'videola_console_user_devices_page',
+    'page arguments' => array(1),
+    'access callback' => 'videola_console_user_access',
+    'access arguments' => array(1),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'videola_console.pages.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_perm().
+ */
+function videola_console_perm() {
+  return array('administer own videola_console devices', 'administer videola_console devices');
+}
+
+/**
+ * Access callback for device administration page.
+ */
+function videola_console_user_access($account = NULL) {
+  global $user;
+
+  // Allow this function to work for the currently logged in user if no account
+  // is specified when calling.
+  $account = is_null($account) ? $user : $account;
+
+  if (user_access('administer videola_console devices')) {
+    return TRUE;
+  }
+  else if ($user->uid == $account->uid && user_access('administer own videola_console devices')) {
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+/**
+ * Implementats of hook_services_resources().
+ */
+function videola_console_services_resources() {
+  $resources = array();
+  $resources['console'] = array();
+  $resources['console']['actions'] = array(
+    // Pass in console ID and user ID to see if it's active. Returns bool.
+    // Standard responses contains the following information
+    // status - (active | inactive | ...)
+    // uid - user id if applicable
+    // data - (additional data associated with this response)
+    'authorize' => array(
+      'file' => array(
+        'module' => 'videola_console',
+        'type' => 'inc',
+        'name' => 'resources/videola_console.console',
+      ),
+      'callback' => 'videola_console_authorization',
+      'access callback' => 'videola_console_authorization_access',
+      'args' => array(
+        array(
+          'name' => 'device_id',
+          'optional' => FALSE,
+          'source' => array('data' => 'device_id'),
+          'description' => t('The unique ID of the console.'),
+          'type' => 'string',
+        ),
+        array(
+          'name' => 'uid',
+          'optional' => TRUE,
+          'source' => array('data' => 'uid'),
+          'description' => t('Unique ID of the user using this console.'),
+          'type' => 'int',
+        ),
+      ),
+    ),
+    // TODO: deactivate
+  );
+  return $resources;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function videola_console_theme($existing, $type, $theme, $path) {
+  return array(
+    'videola_console_device_list' => array(
+      'arguments' => array('devices' => NULL), 
+      'template' => 'templates/videola_console_device_list',
+      'file' => 'templates/preprocess.inc',
+    ), 
+  );
+}
+
+/**
+ * Load a device object from the database.
+ *
+ * Contains information about the current authorization status of the console
+ * and the associated user if the console has been associated with a user
+ * account.
+ *
+ * @param $devide_id
+ *   Unique ID of the device. Usually a hardware ID or Mac Address.
+ * @param $reset
+ *   (bool) Reset the functions static cache.
+ *
+ * @return
+ *   A console object or FALSE if one could not be found.
+ */
+function videola_console_device_load($device_id, $reset = FALSE) {
+  static $videola_console_consoles;
+  $videola_console_consoles = isset($videola_console_consoles) ? $videola_console_consoles : array();
+
+  if (!isset($videola_console_consoles[$device_id]) || $reset) {
+    $videola_console_consoles[$device_id] = db_fetch_object(db_query_range('SELECT * FROM {videola_console_devices} WHERE device_id = "%s"', $device_id, 0, 1));
+  }
+
+  return isset($videola_console_consoles[$device_id]) ? $videola_console_consoles[$device_id] : FALSE;
+}
+
+/**
+ * Get all devices associated with an account.
+ */
+function videola_console_devices($uid) {
+  $devices = array();
+  $results = db_query('SELECT * FROM {videola_console_devices} WHERE uid = %d', $uid);
+  while ($row = db_fetch_object($results)) {
+    $devices[$row->device_id] = $row;
+  }
+  return $devices;
+}
+
+function videola_console_device_authorize($device_id, $uid) {
+  db_query('UPDATE {videola_console_devices} SET uid = %d, status="authorized", last_updated = %d WHERE device_id = "%s"', $uid, time(), $device_id);
+  watchdog('videola_console', 'Device %device activated by user @uid', array('%device' => $device_id, '@uid' => $uid));
+  return TRUE;
+}
+
+/**
+ * Remove a device.
+ *
+ * @param $device_id
+ *   Unique ID of the device to remove.
+ */
+function videola_console_device_remove($device_id) {
+  db_query('DELETE FROM {videola_console_devices} WHERE device_id = "%s"', $device_id);
+  watchdog('videola_console', 'Device %device deactivated.', array('%device' => $device_id));
+}
+
+/**
+ * Generate a unique 8 character PIN for use when activiating a device.
+ */
+function videola_console_activation_pin($device_id) {
+  return substr(strtoupper(md5($device_id . time())), 0, 8);
+}
+
+
+/**
+ * Implements hook_cron().
+ */
+function videola_console_cron() {
+  // TODO: remove an 'in process' console activations after a configurable
+  // period of time.
+}

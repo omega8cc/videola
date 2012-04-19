@@ -1,0 +1,67 @@
+<?php
+/**
+ * @file
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function videola_console_schema() {
+  $schema = array();
+  $schema['videola_console_devices'] = array(
+    'description' => t('Associate console with a user account.'),
+    'fields' => array(
+      'device_id' => array(
+        'description' => t('Unique hardware ID of the device.'),
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'uid' => array(
+        'description' => t('User ID from {users}'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'status' => array(
+        'description' => t('Activation status of console.'),
+        'type' => 'varchar',
+        'length' => '25',
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'authorization_pin' => array(
+        'description' => t('Activation pin used during console authorization.'),
+        'type' => 'varchar',
+        'length' => '8',
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'last_updated' => array(
+        'description' => t('Timestampe of when this record was last updated.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+    ),
+    'indexes' => array(
+      'device_id_uid' => array('device_id', 'uid'),
+    ),
+  );
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function videola_console_install() {
+  drupal_install_schema('videola_console');
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function videola_console_uninstall() {
+  drupal_uninstall_schema('videola_console');
+}
