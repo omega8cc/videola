@@ -164,6 +164,7 @@ dependencies[] = term_node_count
 dependencies[] = token
 
 ; Videola
+dependencies[] = videola_console
 dependencies[] = videola_core
 dependencies[] = videola_video
 dependencies[] = videola_dashboard
@@ -176,6 +177,7 @@ dependencies[] = videola_services
 dependencies[] = chaptermarkers
 dependencies[] = jwplayer
 dependencies[] = vidhist
+dependencies[] = vidhist_service
 
 ; -----------------------------------------------------------------------------
 ;                                   Users
