@@ -1,0 +1,6 @@
+name = Video History Service
+description = Saves video history via vidhist module - using services.
+package = Services - services
+dependencies[] = services
+dependencies[] = vidhist
+core = 6.x

@@ -1,0 +1,34 @@
+<?php
+// $Id:$
+/**
+ * @file
+ *  Link vidhist module to services module.
+ */
+
+/**
+ * Implementation of hook_service().
+ */
+function vidhist_service_services_resources() {
+  $resources = array();
+  $resources['vidhist'] = array();
+  $resources['vidhist']['create'] = array(
+    'help' => 'Save a vidhist record.',
+    'file' => array(
+      'type' => 'inc',
+      'module' => 'vidhist_service',
+      'name' => 'vidhist_service.resource',
+    ),
+    'callback' => 'vidhist_service_save',
+    'access callback' => 'vidhist_service_get_access',
+    'args' => array(
+      array(
+        'name' => 'vidhist',
+        'type' => 'array',
+        'description' => t('An array representing a vidhist record.'),
+        'source' => 'data',
+        'optional' => FALSE,
+      ),
+    ),
+  );
+  return $resources;
+}
