@@ -47,7 +47,7 @@ custom modules.
 
 - Where is the Drush Make file?
   - We keep an updated version of the make file on Git Hub in our project
-    section. https://github.com/Lullabot/videola
+    section. https://github.com/Videola/videola
   - You can also download the most recent stable version on [Videola][1]
 
 - Where do I put the file?
