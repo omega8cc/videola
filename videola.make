@@ -138,9 +138,6 @@ projects[semanticviews][version] = "1.1"
 
 projects[services][subdir] = "contrib"
 projects[services][version] = "3.x-dev"
-; Need this patch so the rest_server module can be installed as part of an
-; install profile. http://drupal.org/node/1532106
-projects[services][patch][] = "http://drupal.org/files/1532106-1-spyc_runtime-eojthebrave.patch"
 
 projects[services_views][subdir] = "contrib"
 projects[services_views][version] = "1.x-dev"
