@@ -15,4 +15,4 @@ projects[] = drupal
 ; Setup the videola profile from this make file stub.
 projects[videola][type] = "profile"
 projects[videola][download][type] = git
-projects[videola][download][url] = https://github.com/Lullabot/videola.git
+projects[videola][download][url] = https://github.com/Videola/videola.git
