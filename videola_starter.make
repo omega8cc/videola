@@ -2,8 +2,8 @@
 ; Get Drupal core and the videola profile which contains a .make file that will
 ; download all the required projects/libraries.
 
-core = 6.x
 api = 2
+core = 6.x
 
 projects[] = drupal
 
@@ -14,5 +14,5 @@ projects[] = drupal
 
 ; Setup the videola profile from this make file stub.
 projects[videola][type] = "profile"
-projects[videola][download][type] = git
-projects[videola][download][url] = https://github.com/Lullabot/videola.git
+projects[videola][download][type] = "git"
+projects[videola][download][url] = "git://github.com/Videola/videola.git"
